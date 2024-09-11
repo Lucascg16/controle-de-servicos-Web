@@ -7,7 +7,7 @@ namespace ServicoInWeb.Service
         public static IServiceCollection Addinfra(this IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<IHttpBaseModel, HttpBaseModel>();
 

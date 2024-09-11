@@ -1,4 +1,9 @@
-﻿namespace ServicoInWeb.Service
+﻿using Newtonsoft.Json;
+using ServicoInWeb.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json.Serialization;
+
+namespace ServicoInWeb.Service
 {
     public class SectionService : ISectionService
     {
@@ -9,19 +14,34 @@
             _httpContext = context;
         }
 
-        public void CreateUserSection(string Token)
+        public void CreateUserSection(string token)
         {
-            _httpContext.HttpContext.Session.SetString("token", Token);
+            var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+
+            object jsonObj = new
+            {
+                Token = token,
+                Id = decodeToken.Claims.FirstOrDefault(x => x.Type == "Id"),
+                Role = decodeToken.Claims.FirstOrDefault(x => x.Type == "Role")
+            };
+
+            string valorSerializado = JsonConvert.SerializeObject(jsonObj);
+
+            _httpContext.HttpContext.Session.SetString("sessaoUserLogged", valorSerializado);
         }
 
         public void DesableUserSection()
         {
-            throw new NotImplementedException();
+            _httpContext.HttpContext.Session.Remove("sessaoUserLogged");
         }
 
-        public string GetSection()
+        public object GetSection()
         {
-            throw new NotImplementedException();
+            string sessaoUsuario = _httpContext.HttpContext.Session.GetString("sessaoUserLogged");
+
+            if (string.IsNullOrEmpty(sessaoUsuario)) return null!;
+
+            return JsonConvert.DeserializeObject<object>(sessaoUsuario);
         }
     }
 }

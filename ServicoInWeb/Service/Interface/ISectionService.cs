@@ -4,6 +4,6 @@
     {
         void CreateUserSection(string Token);
         void DesableUserSection();//Todo:pesquisar como revogar o token jwt
-        string GetSection();
+        object GetSection();
     }
 }

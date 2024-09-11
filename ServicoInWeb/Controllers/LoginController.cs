@@ -1,21 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicoInWeb.Models;
+using ServicoInWeb.Service;
 
 namespace ServicoInWeb.Controllers
 {
     public class LoginController : Controller
 	{
 		private readonly IHttpBaseModel _httpService;
+		private readonly ISectionService _sectionService;
 		private readonly string url;
-        public LoginController(IHttpBaseModel httpService)
+        public LoginController(IHttpBaseModel httpService, ISectionService sectionService)
         {
             _httpService = httpService;
             url = "api/v1/auth";
+            _sectionService = sectionService;
         }
 
         public IActionResult Index()
 		{
-			return View();
+			if(_sectionService.GetSection() != null)
+                return RedirectToAction("Index", "Home");
+
+            return View();
 		}
 
 		[HttpPost]
@@ -28,13 +34,20 @@ namespace ServicoInWeb.Controllers
 
 			if (response.IsSuccessStatusCode) 
 			{
-                var token = await response.Content.ReadAsStringAsync();
+                _sectionService.CreateUserSection(await response.Content.ReadAsStringAsync());
                 return RedirectToAction("Index", "Home");
             }
 
-			login.Mensagem = await response.Content.ReadAsStringAsync();
+			TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
 
             return View(login);
         }
+
+		public ActionResult Logout() 
+		{
+			_sectionService.DesableUserSection();
+
+			return RedirectToAction("index");
+		}
 	}
 }

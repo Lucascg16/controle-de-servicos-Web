@@ -8,6 +8,5 @@ namespace ServicoInWeb.Models
         public string Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "O campo senha é obrigatório")]
         public string Password { get; set; } = string.Empty;
-        public string? Mensagem { get; set; }
     }
 }
