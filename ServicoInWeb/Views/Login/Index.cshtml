@@ -8,12 +8,12 @@
         <div class="col-lg-12">
             <label class="form-label" for="">Email</label>
             <input type="text" asp-for="Email" class="form-control">
-            @Html.ValidationMessageFor(x => x.Email)
+            <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
         </div>
         <div class="col-lg-12">
             <label class="form-label" for="">Senha</label>
             <input type="password" asp-for="Password" class="form-control">
-            @Html.ValidationMessageFor(x => x.Password)
+            <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
         </div>
         @if (TempData["MensagemError"] is not null)
         {

@@ -21,8 +21,8 @@ namespace ServicoInWeb.Service
             object jsonObj = new
             {
                 Token = token,
-                Id = decodeToken.Claims.FirstOrDefault(x => x.Type == "Id"),
-                Role = decodeToken.Claims.FirstOrDefault(x => x.Type == "Role")
+                Id = decodeToken.Claims.FirstOrDefault(x => x.Type == "id"),
+                Role = decodeToken.Claims.FirstOrDefault(x => x.Type == "role")
             };
 
             string valorSerializado = JsonConvert.SerializeObject(jsonObj);
