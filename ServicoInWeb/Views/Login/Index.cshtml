@@ -3,17 +3,19 @@
     Layout = "_layout_Login";
     ViewData["Title"] = "Login";
 }
-<div>
+<div class="login">
     <form asp-action="Index" asp-controller="Login" method="post">
-        <div class="col-lg-12">
-            <label class="form-label" for="">Email</label>
-            <input type="text" asp-for="Email" class="form-control">
-            <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
-        </div>
-        <div class="col-lg-12">
-            <label class="form-label" for="">Senha</label>
-            <input type="password" asp-for="Password" class="form-control">
-            <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
+        <div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Email</label>
+                <input type="text" asp-for="Email" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Senha</label>
+                <input type="password" asp-for="Password" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
+            </div>
         </div>
         @if (TempData["MensagemError"] is not null)
         {
@@ -21,7 +23,17 @@
                 @TempData["MensagemError"]
             </div>
         }
-        <button class="btn btn-success" type="submit">Entrar</button>
-
+        <button class="btn btn-primary" type="submit">Entrar</button>
     </form>
 </div>
+<style>
+    .login {
+        padding: 10px 50px;
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .form-control {
+        margin-bottom: 15px;
+    }
+</style>

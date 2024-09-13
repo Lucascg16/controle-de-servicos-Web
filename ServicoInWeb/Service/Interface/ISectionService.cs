@@ -1,9 +1,11 @@
-﻿namespace ServicoInWeb.Service
+﻿using ServicoInWeb.Models;
+
+namespace ServicoInWeb.Service
 {
     public interface ISectionService
     {
-        void CreateUserSection(string Token);
+        Task CreateUserSection(string Token);
         void DesableUserSection();//Todo:pesquisar como revogar o token jwt
-        object GetSection();
+        SessionModel GetSection();
     }
 }

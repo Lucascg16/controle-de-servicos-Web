@@ -1,25 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using ServicoInWeb.Models;
+using ServicoInWeb.Service;
 using System.Diagnostics;
 
 namespace ServicoInWeb.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly ISectionService _sectionServices;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(ISectionService sectionService)
 		{
-			_logger = logger;
+			_sectionServices = sectionService;
+			Autenticate(_sectionServices);
 		}
 
 		public IActionResult Index()
 		{
-			return View();
+			if(Session is null)
+				return RedirectToAction("Index", "Login");
+
+            return View();
 		}
 
 		public IActionResult Privacy()
 		{
+			if (Session is null)
+				return RedirectToAction("Index", "Login");
+
 			return View();
 		}
 
