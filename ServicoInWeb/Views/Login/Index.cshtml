@@ -6,6 +6,13 @@
 <div class="login">
     <form asp-action="Index" asp-controller="Login" method="post">
         <div>
+            <h5 class="text-sm-center login-title">Faça login com uma conta local</h5>
+            @if (TempData["MensagemError"] is not null)
+            {
+                <div class="text-lg-start text-danger">
+                    <p class="text-center">@TempData["MensagemError"]</p>
+                </div>
+            }
             <div class="col-lg-12">
                 <label class="form-label" for="">Email</label>
                 <input type="text" asp-for="Email" class="form-control">
@@ -17,23 +24,40 @@
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
             </div>
         </div>
-        @if (TempData["MensagemError"] is not null)
-        {
-            <div class="text-lg-start text-danger">
-                @TempData["MensagemError"]
-            </div>
-        }
-        <button class="btn btn-primary" type="submit">Entrar</button>
+        <div class="diviser"><hr></div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-login" type="submit">Entrar</button>
+            <p class="text-center">Não tem conta? <a href="#" class="text-end">Cadastro</a></p>
+        </div>
     </form>
 </div>
 <style>
     .login {
+        display: grid;
         padding: 10px 50px;
         width: 100%;
         max-width: 450px;
+        margin: 0 auto;
+        border: hidden 1px;
+        border-radius: 40px;
+        background-color: #f7f7f7;
     }
 
     .form-control {
-        margin-bottom: 15px;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .form-label{
+        margin-left: 5px;
+    }
+
+    .btn-login{
+        margin-bottom: 5px;
+        border-radius: 10px;
+    }
+
+    .diviser hr{
+        color: #f7f7f7;
     }
 </style>
