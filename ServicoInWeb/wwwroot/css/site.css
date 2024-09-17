@@ -21,3 +21,29 @@ body {
     font-family: Times New Roman;
     margin-bottom: 60px;
 }
+
+.form-base {
+    display: grid;
+    padding: 10px 50px;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    border: hidden 1px;
+    border-radius: 40px;
+    background-color: #f7f7f7;
+}
+
+.form-control {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.form-label {
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+
+.btn {
+    margin-bottom: 5px;
+    border-radius: 10px;
+}

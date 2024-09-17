@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicoInWeb.Models;
 using ServicoInWeb.Service;
+using ServicoInWeb.ViewModels;
+using System.Net;
 
 namespace ServicoInWeb.Controllers
 {
@@ -30,20 +32,53 @@ namespace ServicoInWeb.Controllers
 			if (!ModelState.IsValid)
 				return View(login);
 
-			HttpResponseMessage response = _httpService.Client.PostAsJsonAsync(url, login).Result;
-
-			if (response.IsSuccessStatusCode) 
+			try
 			{
-                _sectionService.CreateUserSection(await response.Content.ReadAsStringAsync());
-                return RedirectToAction("Index", "Home");
-            }
+                HttpResponseMessage response = _httpService.Client.PostAsJsonAsync(url, login).Result;
 
-			TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    _sectionService.CreateUserSection(await response.Content.ReadAsStringAsync());
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+            }
+            catch
+			{
+				TempData["MensagemError"] = "Há algo de errado com o sistema, por favor entre em contato com o administrador";
+			}
 
             return View(login);
         }
 
-		public ActionResult Logout() 
+		public IActionResult CreateAccount()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CreateAccount([FromForm] CreateAccountViewModel model)
+		{
+			if(!ModelState.IsValid)
+				return View(model);
+
+			CreateAccountModel accountModel = new(model);
+			try
+			{
+                HttpResponseMessage response = _httpService.Client.PostAsJsonAsync("api/v1/auth/create", accountModel).Result;
+                if (response.IsSuccessStatusCode)
+                    TempData["Sucesso"] = "Conta criada com sucesso, redirecionando para o login.";
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+            }
+            catch
+			{
+                TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
+            }
+
+            return View(model);
+		}
+        public ActionResult Logout() 
 		{
 			_sectionService.DesableUserSection();
 
