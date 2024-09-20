@@ -1,4 +1,5 @@
-﻿using ServicoInWeb.ViewModels;
+﻿using ServicoInWeb.Service;
+using ServicoInWeb.ViewModels;
 
 namespace ServicoInWeb.Models
 {
@@ -12,7 +13,7 @@ namespace ServicoInWeb.Models
             Usuario.Nome = model.Nome;
             Usuario.Email = model.Email;
             Usuario.Password = model.Password;
-            Usuario.Role = "Admin";
+            Usuario.Role = Utilitarios.GetRoleString(RoleEnum.Admin);
             Empresa.Nome = model.NomeEmpresa;
             Empresa.Cnpj = model.Cnpj ?? string.Empty;
             Empresa.Cpf = model.Cpf ?? string.Empty;

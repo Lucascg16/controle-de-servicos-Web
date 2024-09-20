@@ -9,9 +9,9 @@ namespace ServicoInWeb.Controllers
     public class LoginController : Controller
 	{
 		private readonly IHttpBaseModel _httpService;
-		private readonly ISectionService _sectionService;
+		private readonly ISessionService _sectionService;
 		private readonly string url;
-        public LoginController(IHttpBaseModel httpService, ISectionService sectionService)
+        public LoginController(IHttpBaseModel httpService, ISessionService sectionService)
         {
             _httpService = httpService;
             url = "api/v1/auth";
@@ -38,7 +38,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    _sectionService.CreateUserSection(await response.Content.ReadAsStringAsync());
+                    await _sectionService.CreateUserSection(await response.Content.ReadAsStringAsync());
                     return RedirectToAction("Index", "Home");
                 }
                 TempData["MensagemError"] = await response.Content.ReadAsStringAsync();

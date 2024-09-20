@@ -10,9 +10,11 @@
             Usuario = usuario;
         }
 
-        public string Token { get; set; }
-        public string Id {  get; set; }
-        public string Role { get; set; }
-        public UsuarioModel Usuario { get; set; }
+        public SessionModel(){}
+
+        public string? Token { get; set; }
+        public string? Id {  get; set; }
+        public string? Role { get; set; }
+        public UsuarioModel? Usuario { get; set; }
     }
 }

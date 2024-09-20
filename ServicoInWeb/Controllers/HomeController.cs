@@ -8,9 +8,9 @@ namespace ServicoInWeb.Controllers
 {
 	public class HomeController : BaseController
 	{
-		private readonly ISectionService _sectionServices;
+		private readonly ISessionService _sectionServices;
 
-		public HomeController(ISectionService sectionService)
+		public HomeController(ISessionService sectionService)
 		{
 			_sectionServices = sectionService;
 			Autenticate(_sectionServices);

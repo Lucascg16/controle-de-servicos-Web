@@ -6,9 +6,9 @@ namespace ServicoInWeb.Controllers
 {
     public class BaseController : Controller
     {
-        public SessionModel Session { get; private set; }
+        public SessionModel Session { get; private set; } = new();
 
-        protected void Autenticate(ISectionService service)
+        protected void Autenticate(ISessionService service)
         {
             Session = service.GetSection();
         }
