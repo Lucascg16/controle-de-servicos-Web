@@ -10,11 +10,9 @@ namespace ServicoInWeb.Controllers
 	{
 		private readonly IHttpBaseModel _httpService;
 		private readonly ISessionService _sectionService;
-		private readonly string url;
         public LoginController(IHttpBaseModel httpService, ISessionService sectionService)
         {
             _httpService = httpService;
-            url = "api/v1/auth";
             _sectionService = sectionService;
         }
 
@@ -34,7 +32,7 @@ namespace ServicoInWeb.Controllers
 
 			try
 			{
-                HttpResponseMessage response = _httpService.Client.PostAsJsonAsync(url, login).Result;
+                HttpResponseMessage response = _httpService.Client.PostAsJsonAsync("api/v1/auth", login).Result;
 
                 if (response.IsSuccessStatusCode)
                 {

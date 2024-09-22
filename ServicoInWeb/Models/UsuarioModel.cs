@@ -10,5 +10,14 @@
         public string Role { get; set; } = "none";
 
         public UsuarioModel() {}//construtor vazio
+
+        public UsuarioModel(string nome, string email, string password, int empresaId, string role)
+        {
+            Nome = nome;
+            Email = email;
+            Password = password;
+            EmpresaId = empresaId;
+            Role = role;
+        }
     }
 }

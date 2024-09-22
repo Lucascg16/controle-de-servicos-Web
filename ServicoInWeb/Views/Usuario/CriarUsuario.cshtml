@@ -1,0 +1,64 @@
+﻿@using ServicoInWeb.ViewModels
+@model CriarUsuarioViewModel
+@{
+    ViewData["Title"] = "Cadastrar Usuario";
+}
+<div class="form-base">
+    <form asp-action="CriarUsuario" asp-controller="Usuario" method="post">
+       <div>
+           <h5 class="text-sm-center">Cadastrar Usuário</h5>
+            @if (TempData["MensagemError"] is not null)
+            {
+                <div class="text-lg-start text-danger">
+                    <p class="text-center">@TempData["MensagemError"]</p>
+                </div>
+            }
+            @if (TempData["Sucesso"] is not null)
+            {
+                <div class="text-lg-start text-success">
+                    <p class="text-center">@TempData["Sucesso"]</p>
+                </div>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "/Usuario/Index";
+                    }, 5000);
+                </script>
+            }
+            <div class="col-lg-12">
+                <label class="form-label" for="">Nome Completo</label>
+                <input type="text" asp-for="Nome" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
+            </div>
+
+            <div class="col-lg-12">
+                <label class="form-label" for="">Email</label>
+                <input type="text" asp-for="Email" class="form-control" placeholder="mail@mail.com">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
+            </div>
+
+            <div class="col-lg-12">
+                <label class="form-label" for="">Senha</label>
+                <input type="password" asp-for="Senha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Senha)</span>
+            </div>
+
+            <div class="col-lg-12">
+                <label class="form-label" for="">Confirmar Senha</label>
+                <input type="password" asp-for="ConfirmarSenha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.ConfirmarSenha)</span>
+            </div>
+
+            <div class="col-lg-12">
+                <label class="form-label" for="">Acesso</label>
+                <select class="form-control" asp-for="Role">
+                    <option value="@RoleEnum.Admin" selected>Admin</option>
+                    <option value="@RoleEnum.Funcionario">Funcionário</option>
+                </select>
+            </div>
+
+            <div>
+                <button class="btn btn-primary" type="submit">Cadastrar</button>
+            </div>
+       </div>
+    </form>
+</div>
