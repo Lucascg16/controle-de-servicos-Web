@@ -12,7 +12,7 @@ namespace ServicoInWeb.ViewModels
         public string Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "A senha é obrigatória")]
         public string Senha { get; set; } = string.Empty;
-        [Required(ErrorMessage = "O campo é obrigatório")]
+        [Required(ErrorMessage = "Confirmação de senha é obrigatório")]
         public string ConfirmarSenha { get; set; } = string.Empty;
         public RoleEnum Role { get; set; }
     }

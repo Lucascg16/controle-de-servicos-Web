@@ -1,0 +1,28 @@
+﻿@model SessionModel;
+
+<a class="navbar-brand" asp-controller="home" asp-action="index">Início</a>
+<div class="d-sm-inline-flex text-center">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Servico" asp-action="Index" data-toggle="tooltip" title="Gerenciar ou criar novos serviços">Serviços</a>
+        </li>
+        @if(!string.IsNullOrEmpty(Model.Role) && Model.Role == "Admin")
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Usuario" asp-action="Index" data-toggle="tooltip" title="Gerenciar usuários vinculados a empresa">Usuários</a>
+            </li>
+        }
+        else if(!string.IsNullOrEmpty(Model.Role) && Model.Role == "Employee")
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Usuario" asp-action="AlterarUsuario" asp-route-id="@Model.Id" data-toggle="tooltip" title="Alterar dados do perfil">Perfil</a>
+            </li>
+        }
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Empresa" asp-action="Index" data-toggle="tooltip" title="Gerenciar os dados da empresa">Empresa</a>
+        </li>
+    </ul>
+</div>
+<div class="nav-item">
+    <a class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Logout</a>
+</div>

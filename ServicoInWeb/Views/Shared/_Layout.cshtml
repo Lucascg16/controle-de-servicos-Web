@@ -8,28 +8,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ServicoInWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="home" asp-action="index">Início</a>
-                <div class="d-sm-inline-flex text-center">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Servico" asp-action="Index" data-toggle="tooltip" title="Gerenciar ou criar novos serviços">Serviços</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="Index" data-toggle="tooltip" title="Gerenciar usuários vinculados a empresa">Usuários</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Empresa" asp-action="Index" data-toggle="tooltip" title="Gerenciar os dados da empresa">Empresa</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Logout</a>
-                </div>
+                @await Component.InvokeAsync("Menu")
             </div>
         </nav>
     </header>

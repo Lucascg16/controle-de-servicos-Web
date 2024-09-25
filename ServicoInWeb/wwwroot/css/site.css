@@ -38,6 +38,11 @@ body {
     border-radius: 10px;
 }
 
+.form-select {
+    width: 100%;
+    border-radius: 10px;
+}
+
 .form-label {
     margin-left: 5px;
     margin-bottom: 0;
@@ -46,6 +51,29 @@ body {
 .btn {
     margin-bottom: 5px;
     border-radius: 10px;
+}
+
+.u-card {
+    box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.2);
+    height: auto;
+    width: auto;
+    padding: 0.56rem 1rem;
+    min-height: unset;
+    min-width: unset;
+    border-radius: 15px;
+}
+
+.icon-circle {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #d4d4d4;
+    color: #ffffff;
+    font-size: 1.42rem;
 }
 
 th,

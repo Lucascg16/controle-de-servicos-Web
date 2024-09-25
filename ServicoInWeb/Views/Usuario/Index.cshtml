@@ -1,18 +1,18 @@
-﻿@using ServicoInWeb.ViewModels
+﻿@using ServicoInWeb.Service
+@using ServicoInWeb.ViewModels
 @model UsuarioViewModel;
 @{
     ViewData["Title"] = "Usuarios";
 }
 <div class="col-lg-4">
-    <div class="block u-card shadow_ m-0">
+    <div class="block u-card shadow_ m-0" style="padding: 1.28rem 1.71rem">
         <div class="center">
             <div class="icon-circle me-4" style="color: black">
-                
+                <i class="fa-solid fa-plus"></i>
             </div>
-            <i class="fa-solid fa-plus"></i>
+            <span>Adicionar um novo usuário</span>
             <div class="w-100">
-                <span>Adicionar um novo usuário</span>
-                <a class="btn btn-primary text-decoration-none" asp-action="criarusuario" asp-controller="Usuario">Adicionar</a>
+                <a class="btn btn-outline-primary text-decoration-none w-100" asp-action="criarusuario" asp-controller="Usuario">Adicionar</a>
             </div>
         </div>
     </div>
@@ -27,30 +27,16 @@
             <th scope="col">Nivel de acesso</th>
         </tr>
         @foreach(var usuario in Model.Usuarios)
-        {
+        {   
             <tr>
-                <th scope="row">@usuario.Id</th>
-                <td>@usuario.Nome</td>
+                <th scope="row">@usuario.Id <a asp-action="AlterarUsuario" asp-controller="Usuario" asp-route-id="@usuario.Id"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a></th>
+                <td>@usuario.Nome</td> 
                 <td>@usuario.Email</td>
-                <td>@usuario.Role</td>
+                <td>@Utilitarios.GetRoleEnum(usuario.Role)</td>
             </tr>
         }
     </table>
 </div>
-
-
-<style>
-    .u-card{
-        box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.2);
-        height: auto;
-        width: auto;
-        padding: 0.56rem 1rem;
-        min-height: unset;
-        min-width: unset;
-        border-radius: 15px;
-    }
-</style>
-
 
 @* <div class="col-lg-4">
     <div class="block shadow_ card-colaborators m-0" style="padding: 1.28rem 1.71rem">

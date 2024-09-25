@@ -1,12 +1,12 @@
 ﻿@using ServicoInWeb.ViewModels
-@model CriarUsuarioViewModel
+@model AlterarUsuarioViewModel;
 @{
-    ViewData["Title"] = "Cadastrar Usuario";
+    ViewData["Title"] = "Alterar dados";
 }
 <div class="form-base">
-    <form asp-action="CriarUsuario" asp-controller="Usuario" method="post">
-       <div>
-           <h5 class="text-sm-center">Cadastrar Usuário</h5>
+    <form asp-action="AlterarUsuario" asp-controller="Usuario" method="post">
+        <div>
+            <h5 class="text-sm-center">Alterar dados do Usuário</h5>
             @if (TempData["MensagemError"] is not null)
             {
                 <div class="text-lg-start text-danger">
@@ -24,6 +24,8 @@
                     }, 5000);
                 </script>
             }
+            <input type="text" asp-for="Id" value="@Model.Id" hidden>
+            <input type="text" asp-for="EmpresaId" value="@Model.EmpresaId" hidden>
             <div class="col-lg-12">
                 <label class="form-label" for="">Nome Completo</label>
                 <input type="text" asp-for="Nome" class="form-control">
@@ -36,29 +38,21 @@
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
             </div>
 
-            <div class="col-lg-12">
-                <label class="form-label" for="">Senha</label>
-                <input type="password" asp-for="Senha" class="form-control">
-                <span class="text-danger">@Html.ValidationMessageFor(x => x.Senha)</span>
-            </div>
-
-            <div class="col-lg-12">
-                <label class="form-label" for="">Confirmar Senha</label>
-                <input type="password" asp-for="ConfirmarSenha" class="form-control">
-                <span class="text-danger">@Html.ValidationMessageFor(x => x.ConfirmarSenha)</span>
-            </div>
-
-            <div class="col-lg-12">
-                <label class="form-label" for="">Acesso</label>
-                <select class="form-select" asp-for="Role">
-                    <option value="@RoleEnum.Admin" selected>Admin</option>
-                    <option value="@RoleEnum.Funcionario">Funcionário</option>
-                </select>
-            </div>
+            @if(Model.UserLogedRole == "Admin")
+            {
+                <div class="col-lg-12">
+                    <label class="form-label" for="">Acesso</label>
+                    <select class="form-select" asp-for="Role">
+                        <option value="@RoleEnum.Admin" selected>Admin</option>
+                        <option value="@RoleEnum.Funcionario">Funcionário</option>
+                    </select>
+                </div>
+            }
             <div class="diviser" style="color: #f7f7f7;"><hr></div>
             <div>
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
+                <button class="btn btn-primary" type="submit">Alterar</button>
             </div>
-       </div>
+        </div>
     </form>
 </div>
+

@@ -16,5 +16,18 @@ namespace ServicoInWeb.Service
                     return "None";
             }
         }
+
+        public static RoleEnum GetRoleEnum(string role)
+        {
+            switch (role) 
+            {
+                case "Admin":
+                    return RoleEnum.Admin;
+                case "Employee":
+                    return RoleEnum.Funcionario;
+                default:
+                    return RoleEnum.none;
+            }
+        }
     }
 }

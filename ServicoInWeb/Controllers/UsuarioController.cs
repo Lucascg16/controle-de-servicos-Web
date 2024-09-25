@@ -22,6 +22,8 @@ namespace ServicoInWeb.Controllers
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
+            if (Session.Role == "Employee")
+                return RedirectToAction("AlterarUsuario", "Usuario");
 
             List<UsuarioModel>? userList = [];
             try
@@ -53,39 +55,91 @@ namespace ServicoInWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult CriarUsuario([FromForm] CriarUsuarioViewModel criarUsuario)
+        public async Task<IActionResult> CriarUsuario([FromForm] CriarUsuarioViewModel model)
         {
             if (!ModelState.IsValid) 
-                return View(criarUsuario);
-            if (criarUsuario.Senha != criarUsuario.ConfirmarSenha)
+                return View(model);
+            if (model.Senha != model.ConfirmarSenha)
             {
                 TempData["MensagemError"] = "Os campos de senha não coincidem";
-                return View(criarUsuario);
+                return View(model);
             }
 
-            UsuarioModel novoUsuario = new(criarUsuario.Nome, criarUsuario.Email, criarUsuario.Senha, Session.Usuario.EmpresaId, Utilitarios.GetRoleString(criarUsuario.Role));
+            UsuarioModel novoUsuario = new(model.Nome, model.Email, model.Senha, Session.Usuario.EmpresaId, Utilitarios.GetRoleString(model.Role));
 
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
                 HttpResponseMessage response = _httpBase.Client.PostAsJsonAsync("api/v1/Usuario", novoUsuario).Result;
 
-                if (response.IsSuccessStatusCode)//adicionar regra de negocio para verificar se o email ja existe na empresa
+                if (response.IsSuccessStatusCode)
                 {
                     TempData["Sucesso"] = "Usuário criado com sucesso";
                     return View();
                 }
 
+
                 if (response.StatusCode == HttpStatusCode.BadRequest)
-                {
                     TempData["MensagemError"] = "Ocorreu um erro ao criar usuário, verifique se os campos estão preenchidos corretamente";
-                }
-                return View(criarUsuario);
+                if(response.StatusCode == HttpStatusCode.Unauthorized)
+                    TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+
+                return View(model);
             }
             catch 
             {
                 TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
-                return View(criarUsuario);
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> AlterarUsuario(int id)
+        {
+            if(Session is null)
+                return RedirectToAction("Index", "Login");
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario?id={id}").Result;
+
+                var user = await response.Content.ReadFromJsonAsync<UsuarioModel>();
+
+                return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, Utilitarios.GetRoleEnum(user.Role), user.EmpresaId, Session.Role));
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AlterarUsuario([FromForm]AlterarUsuarioViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            AlterarUsuarioModel user = new(model.Id, model.Nome, model.Email, Utilitarios.GetRoleString(model.Role), model.EmpresaId);
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.PatchAsJsonAsync("api/v1/usuario", user).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["Sucesso"] = "Usuário alterado com sucesso";
+                    return View();
+                }
+
+                if(response.StatusCode == HttpStatusCode.BadRequest)
+                    TempData["MensagemError"] = "Ocorreu um erro ao alterar usuário, verifique se os campos estão preenchidos corretamente";
+
+                return View(model);
+            }
+            catch
+            {
+                TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
+                return View(model);
             }
         }
     }
