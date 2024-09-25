@@ -11,6 +11,9 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="Usuario" asp-action="Index" data-toggle="tooltip" title="Gerenciar usuários vinculados a empresa">Usuários</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Empresa" asp-action="Index" asp-route-id="@Model.Usuario.EmpresaId" data-toggle="tooltip" title="Gerenciar os dados da empresa">Empresa</a>
+            </li>
         }
         else if(!string.IsNullOrEmpty(Model.Role) && Model.Role == "Employee")
         {
@@ -18,9 +21,6 @@
                 <a class="nav-link text-dark" asp-controller="Usuario" asp-action="AlterarUsuario" asp-route-id="@Model.Id" data-toggle="tooltip" title="Alterar dados do perfil">Perfil</a>
             </li>
         }
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Empresa" asp-action="Index" data-toggle="tooltip" title="Gerenciar os dados da empresa">Empresa</a>
-        </li>
     </ul>
 </div>
 <div class="nav-item">

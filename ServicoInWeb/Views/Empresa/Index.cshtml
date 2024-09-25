@@ -1,5 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EmpresaModel
 @{
+    ViewData["Title"] = "Empresa";
 }
+<div class="form-base">
+    <form asp-action="Index" asp-controller="Empresa" method="post">
+        <div>
+            <h5 class="text-sm-center">Visualizar ou alterar dados da empresa</h5>
+            @if (TempData["MensagemError"] is not null)
+            {
+                <div class="text-lg-start text-danger">
+                    <p class="text-center">@TempData["MensagemError"]</p>
+                </div>
+            }
+            @if (TempData["Sucesso"] is not null)
+            {
+                <div class="text-lg-start text-success">
+                    <p class="text-center">@TempData["Sucesso"]</p>
+                </div>
+            }
+            <input asp-for="Id" value="@Model.Id" hidden>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Nome*</label>
+                <input type="text" asp-for="Nome" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Cnpj</label>
+                <input type="text" asp-for="Cnpj" class="form-control" id="Cnpj" placeholder="##.###.###/####-##">
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Cpf</label>
+                <input type="text" asp-for="Cpf" class="form-control" id="Cpf" placeholder="###.###.###-##">
+            </div>
+            <div class="diviser"><hr></div>
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Alterar dados</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .diviser hr {
+        color: #f7f7f7;
+    }
+</style>
+<script>
+    document.getElementById('Cnpj').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\W/g, '').match(/(\w{0,2})(\w{0,3})(\w{0,3})(\w{0,4})(\w{0,2})/);
+        e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+    });
+
+    document.getElementById('Cpf').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/);
+        e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + (x[4] ? '-' + x[4] : '');
+    });
+</script>

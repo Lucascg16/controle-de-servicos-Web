@@ -1,12 +1,70 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServicoInWeb.Models;
+using ServicoInWeb.Service;
 
 namespace ServicoInWeb.Controllers
 {
-    public class EmpresaController : Controller
+    public class EmpresaController : BaseController
     {
-        public IActionResult Index()
+        private readonly IHttpBaseModel _httpBase;
+        private readonly ISessionService _sessionService;
+
+        public EmpresaController(IHttpBaseModel httpBase, ISessionService session) 
         {
-            return View();
+            _httpBase = httpBase;
+            _sessionService = session;
+            Autenticate(_sessionService);
+        }
+        public async Task<IActionResult> Index(int id)
+        {
+            if(Session is null)
+                return RedirectToAction("Index", "Login");
+            if (Session.Role == "Employee")
+                return RedirectToAction("Index", "Home");
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/empresa?id={id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();
+                    return View(empresa);
+                }
+
+                return View();
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Index([FromForm] EmpresaModel empresa)
+        {
+            if (!ModelState.IsValid)
+                return View(empresa);
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.PatchAsJsonAsync("api/v1/empresa", empresa).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["Sucesso"] = "Os dados da empresa foram alterado com sucesso";
+                    return View(empresa);
+                }
+            }
+            catch
+            {
+                TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
+                return View(empresa);
+            }
+
+            return View(empresa);
         }
     }
 }

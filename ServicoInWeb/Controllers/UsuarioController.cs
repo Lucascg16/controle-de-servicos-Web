@@ -34,11 +34,11 @@ namespace ServicoInWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     userList = await response.Content.ReadFromJsonAsync<List<UsuarioModel>>();
+                    UsuarioViewModel view = new(userList);
+                    return View(view);
                 }
 
-                UsuarioViewModel view = new(userList);
-
-                return View(view);
+                return View();
             }
             catch
             { 
