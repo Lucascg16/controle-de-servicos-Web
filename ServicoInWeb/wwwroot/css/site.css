@@ -68,7 +68,7 @@ body {
     min-width: 2rem;
     height: 2rem;
     border-radius: 4rem;
-    display: inline-flex;
+    display: grid;
     align-items: center;
     justify-content: center;
     background: #d4d4d4;

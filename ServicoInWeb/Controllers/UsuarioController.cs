@@ -78,7 +78,6 @@ namespace ServicoInWeb.Controllers
                     return View();
                 }
 
-
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                     TempData["MensagemError"] = "Ocorreu um erro ao criar usuário, verifique se os campos estão preenchidos corretamente";
                 if(response.StatusCode == HttpStatusCode.Unauthorized)
@@ -103,7 +102,7 @@ namespace ServicoInWeb.Controllers
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
                 HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario?id={id}").Result;
 
-                var user = await response.Content.ReadFromJsonAsync<UsuarioModel>();
+                var user = await response.Content.ReadFromJsonAsync<UsuarioModel>() ?? new();
 
                 return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, Utilitarios.GetRoleEnum(user.Role), user.EmpresaId, Session.Role));
             }
@@ -128,7 +127,7 @@ namespace ServicoInWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Sucesso"] = "Usuário alterado com sucesso";
-                    return View();
+                    return View(model);
                 }
 
                 if(response.StatusCode == HttpStatusCode.BadRequest)
