@@ -1,5 +1,99 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ServicoInWeb.ViewModels
+@model ServicoViewModel;
 @{
+    ViewData["Title"] = "Serviços";
 }
+<div class="col-lg-4">
+    <div class="block u-card shadow_ m-0" style="padding: 1.28rem 1.71rem">
+        <div class="center">
+            <div class="icon-circle me-4" style="color: black">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <span>Iniciar novo serviço</span>
+            <div class="w-100">
+                <a class="btn btn-outline-primary text-decoration-none w-100" asp-action="CriarServico" asp-controller="Servico">Iniciar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12" style="padding: 0.58rem 1rem">
+    <table>
+        <caption>@Model.Servicos.Count() Serciços</caption>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Custos</th>
+            <th scope="col">Orçamento Inicial</th>
+            <th scope="col">Valor faturado</th>
+            <th scope="col">Lucro</th>
+            <th scope="col">Cancelado</th>
+            <th scope="col">Criado em</th>
+            <th scope="col">Finalizado em</th>
+        </tr>
+        @foreach (var servico in Model.Servicos)
+        {                        
+            <tr>
+                <th scope="row">@servico.Id <a asp-action="#" asp-controller="#"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a></th>
+                <td>@servico.Nome</td>
+                <td>@servico.Descricao</td>
+
+                @if (servico.Custos is null)
+                {
+                    <td>--</td>
+                }
+                else
+                {
+                    <td>R$@servico.Custos</td>
+                }
+
+                @if (servico.OrcamentoInicial is null)
+                {
+                    <td>--</td>
+                }
+                else
+                {
+                    <td>R$@servico.OrcamentoInicial</td>
+                }
+
+                @if (servico.ValorFaturado is null)
+                {
+                    <td>--</td>
+                }
+                else
+                {
+                    <td>R$@servico.ValorFaturado</td>
+                }
+
+                @if (servico.LucroLiquido is null)
+                {
+                    <td>--</td>
+                }
+                else
+                {
+                    <td>R$@servico.LucroLiquido</td>
+                }
+
+                @if (servico.Excluido)
+                {
+                    <td>sim</td>
+                }
+                else
+                {
+                    <td>Não</td>
+                }
+
+                <td>@servico.DataCriacao</td>
+
+                @if (servico.DataFinalizado is null)
+                {
+                    <td>--</td>
+                }
+                else
+                {
+                    <td>R$@servico.DataFinalizado</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

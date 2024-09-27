@@ -38,7 +38,7 @@ namespace ServicoInWeb.Controllers
                     return View(view);
                 }
 
-                return View();
+                return View(new UsuarioViewModel([]));
             }
             catch
             { 
@@ -80,7 +80,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                     TempData["MensagemError"] = "Ocorreu um erro ao criar usuário, verifique se os campos estão preenchidos corretamente";
-                if(response.StatusCode == HttpStatusCode.Unauthorized)
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
                     TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
 
                 return View(model);
