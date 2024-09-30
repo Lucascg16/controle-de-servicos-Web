@@ -1,12 +1,11 @@
-﻿@using ServicoInWeb.ViewModels
-@model CriarServicoViewModel
+﻿@model AlterarServicoModel;
 @{
-    ViewData["Title"] = "Criar Serviço";
+    ViewData["Title"] = "Alterar serviço";
 }
 <div class="form-base">
-    <form asp-action="CriarServico" asp-controller="Servico" method="post">
+    <form asp-action="AlterarServico" asp-controller="Servico" method="post">
         <div>
-            <h5 class="text-sm-center">Iniciar um novo Serviço</h5>
+            <h5 class="text-sm-center">Alterar dados do serviço</h5>
             @if (TempData["MensagemError"] is not null)
             {
                 <div class="text-lg-start text-danger">
@@ -24,28 +23,43 @@
                     }, 5000);
                 </script>
             }
+            <input type="text" asp-for="Id" value="@Model.Id" hidden>
             <div class="col-lg-12">
-                <label class="form-label" for="">Nome Completo*</label>
+                <label class="form-label" for="">Nome*</label>
                 <input type="text" asp-for="Nome" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
             </div>
             <div class="col-lg-12">
                 <label class="form-label" for="">Descrição</label>
-                <textarea asp-for="Descricao" class="form-control"></textarea>
+                <textarea asp-for="Descricao" rows="7" id="descricao" class="form-control"></textarea>
             </div>
             <div class="col-lg-12">
                 <label class="form-label" for="">Custos</label>
-                <input type="number" value="0" asp-for="Custos" class="form-control">
+                <input type="number" asp-for="Custos" class="form-control">
             </div>
-            <div class="col-lg-12">
-                <label class="form-label" for="">Orçamento Inicial</label>
-                <input type="number" value="0" asp-for="OrcamentoInicial" class="form-control">
-            </div>
-
             <div class="diviser" style="color: #f7f7f7;"><hr></div>
-            <div>
-                <button class="btn btn-primary" type="submit">Iniciar</button>
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Alterar</button>
+                <a class="btn btn-dark" onclick="Cacelar(@Model.Id)">Cancelar Serviço</a>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    function Cacelar(id) {
+        var confirma = confirm("Tem certeza que deseja cancelar o serviço?");
+
+        if(confirma == true){
+            fetch(`/Servico/CancelarServico/?Id=${id}`, {
+                method:'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                window.location.href = "/Servico/Index";
+            })
+        }
+    }
+</script>

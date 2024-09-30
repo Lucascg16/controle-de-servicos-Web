@@ -2,5 +2,5 @@
 
 namespace ServicoInWeb.ViewModels
 {
-    public record ServicoViewModel(List<ServicoModel>? Servicos);
+    public record ServicoViewModel(List<ServicoModel>? Servicos, bool FilterClose);
 }

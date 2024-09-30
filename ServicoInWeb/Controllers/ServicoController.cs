@@ -2,6 +2,7 @@
 using ServicoInWeb.Models;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
+using System.Net;
 
 namespace ServicoInWeb.Controllers
 {
@@ -16,7 +17,7 @@ namespace ServicoInWeb.Controllers
             Autenticate(_sessionService);
         }
 
-        public async Task<IActionResult> Index(bool open = false, int page = 1, int itensperpage = 10)
+        public async Task<IActionResult> Index(bool filterClose = false, int page = 1, int itensperpage = 10)
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
@@ -26,19 +27,19 @@ namespace ServicoInWeb.Controllers
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
                 HttpResponseMessage response = new();
-                if (!open)
-                    response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
+                if (filterClose)
+                    response = _httpBase.Client.GetAsync($"api/v1/servico/close?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
                 else
                     response = _httpBase.Client.GetAsync($"api/v1/servico/open?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? new();
-                    ServicoViewModel view = new(list);
+                    list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? [];
+                    ServicoViewModel view = new(list, filterClose);
                     return View(view);
                 }
 
-                return View(new ServicoViewModel([]));
+                return View(new ServicoViewModel([], filterClose));
             }
             catch
             {
@@ -70,7 +71,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["Sucesso"] = "Serviço iniciado com sucesso, redirecionando para a pagina anterior";
+                    TempData["Sucesso"] = "Serviço iniciado com sucesso, redirecionando para a página anterior";
                     return View(model);
                 }
 
@@ -81,6 +82,86 @@ namespace ServicoInWeb.Controllers
             {
                 TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
                 return View(model);
+            }
+        }
+
+        public async Task<IActionResult> AlterarServico(int id)
+        {
+            if(Session is null)
+                return RedirectToAction("Index", "Login");
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/servico?id={id}").Result;
+
+                var servico = await response.Content.ReadFromJsonAsync<AlterarServicoModel>() ?? new();
+
+                return View(servico);
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AlterarServico([FromForm]AlterarServicoModel model)
+        {
+            if(!ModelState.IsValid)
+                return View(model);
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpResponseMessage response = _httpBase.Client.PatchAsJsonAsync("api/v1/servico", model).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["Sucesso"] = "Servico alterado com sucesso, redirecionando para a página anterior";
+                }
+
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                    TempData["MensagemError"] = "Ocorreu um erro ao atualizar o serviço.";
+
+                return View(model);
+            }
+            catch
+            {
+                TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult FinalizarServico(int Id, double Faturamento) 
+        {
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"api/v1/servico/finalizar?servicoId={Id}&faturamento={Faturamento}");
+                _httpBase.Client.SendAsync(request);
+                return Ok();
+            }
+            catch
+            { 
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CancelarServico(int Id)
+        {
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"api/v1/servico/cancel?servicoId={Id}");
+                _httpBase.Client.SendAsync(request);
+                return Ok();
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
             }
         }
     }

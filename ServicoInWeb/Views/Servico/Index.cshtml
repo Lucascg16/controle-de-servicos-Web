@@ -17,8 +17,17 @@
     </div>
 </div>
 <div class="col-lg-12" style="padding: 0.58rem 1rem">
+    <span>Filtro de Serviços - </span>
+    @if (Model.FilterClose)
+    {
+        <span>Mostrando Serviços finalizados/cancelados:<a asp-action="Index" asp-controller="Servico" asp-route-filterClose="@false">Alterar</a></span>
+    }
+    else
+    {
+        <span>Mostrando Serviços abertos:<a asp-action="Index" asp-controller="Servico" asp-route-filterClose="@true">Alterar</a></span>
+    }
     <table>
-        <caption>@Model.Servicos.Count() Serciços</caption>
+        <caption>@Model.Servicos.Count() Serviços</caption>
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Nome</th>
@@ -34,7 +43,11 @@
         @foreach (var servico in Model.Servicos)
         {                        
             <tr>
-                <th scope="row">@servico.Id <a asp-action="#" asp-controller="#"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a></th>
+                <th scope="row">@servico.Id @if(!Model.FilterClose)
+                    {
+                        <a asp-action="AlterarServico" asp-controller="Servico" asp-route-id="@servico.Id"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a>
+                    }
+                </th>
                 <td>@servico.Nome</td>
                 <td>@servico.Descricao</td>
 
@@ -87,13 +100,39 @@
 
                 @if (servico.DataFinalizado is null)
                 {
-                    <td>--</td>
+                    if (servico.Excluido)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td><button onclick="Finalizar(@servico.Id)">Finalizar</button></td>
+                    }
                 }
                 else
                 {
-                    <td>R$@servico.DataFinalizado</td>
+                    <td>@servico.DataFinalizado</td>
                 }
             </tr>
         }
     </table>
 </div>
+
+<script>
+    function Finalizar(id) {
+        let faturamento = prompt("Por favor digite o valor pago pelo cliente na entrega do serviço");
+
+        if (faturamento != null && faturamento != "") {
+            fetch(`/Servico/FinalizarServico/?Id=${id}&Faturamento=${faturamento}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }).then(response => {
+                window.location.reload();
+            })
+
+        }
+    }
+</script>
