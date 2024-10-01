@@ -8,7 +8,7 @@ namespace ServicoInWeb.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Nome é obrigatório")]
         public string Nome { get; set; } = string.Empty;
-        public string? Cnpj { get; set; } 
+        public string? Cnpj { get; set; }
         public string? Cpf { get; set; }
 
         public EmpresaModel() {}

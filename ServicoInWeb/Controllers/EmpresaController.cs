@@ -29,7 +29,9 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();
+                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();//adicionar forma do cnpj e cpf serem colocados na pagina com a pontuação.
+                    empresa.Cnpj = Convert.ToUInt64(empresa.Cnpj).ToString(@"00\.000\.000\/0000\-00");
+                    empresa.Cpf = Convert.ToUInt64(empresa.Cpf).ToString(@"000\.000\.000\-00");
                     return View(empresa);
                 }
 
@@ -44,6 +46,8 @@ namespace ServicoInWeb.Controllers
         [HttpPost]
         public IActionResult Index([FromForm] EmpresaModel empresa)
         {
+            ValidateFields(empresa.Cnpj, empresa.Cpf);
+
             if (!ModelState.IsValid)
                 return View(empresa);
 
@@ -54,7 +58,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["Sucesso"] = "Os dados da empresa foram alterado com sucesso";
+                    TempData["Sucesso"] = "Os dados da empresa foram alterados com sucesso";
                     return View(empresa);
                 }
             }
@@ -65,6 +69,15 @@ namespace ServicoInWeb.Controllers
             }
 
             return View(empresa);
+        }
+
+        public void ValidateFields(string cnpj, string cpf)
+        {
+            if (!string.IsNullOrEmpty(cnpj) && cnpj.Length < 18)
+                ModelState.AddModelError("Cnpj", "O Cnpj digitado não é valido");
+
+            if (!string.IsNullOrEmpty(cpf) && cpf.Length < 14)
+                ModelState.AddModelError("Cpf", "O Cpf digitado não é valido");
         }
     }
 }
