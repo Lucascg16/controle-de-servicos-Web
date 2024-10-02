@@ -10,6 +10,7 @@ namespace ServicoInWeb.Service
             services.AddHttpContextAccessor();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IHttpBaseModel, HttpBaseModel>();
+            services.AddSingleton<UrlService>();
 
             return services;
         }

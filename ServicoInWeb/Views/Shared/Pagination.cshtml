@@ -1,0 +1,38 @@
+﻿@model List<PaginationModel>
+@if(Model.Count > 3)
+{
+    int indice = 1;
+    <nav>
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="@Model.First().Link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @foreach(var item in Model)
+            {
+                if(indice != 1 && indice < Model.Count)
+                {
+                    <li class="page-item">
+                        @if (item.Active)
+                        {
+                            <a class="page-link active" href="@item.Link">@item.Number</a>
+                        }
+                        else
+                        {
+                            <a class="page-link" href="@item.Link">@item.Number</a>
+                        }
+                    </li>
+                }
+
+                indice++;
+            }
+
+            <li class="page-item">
+                <a class="page-link" href="@Model.Last().Link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

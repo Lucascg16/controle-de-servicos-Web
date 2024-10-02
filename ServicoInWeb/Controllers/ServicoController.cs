@@ -10,14 +10,17 @@ namespace ServicoInWeb.Controllers
     {
         private readonly IHttpBaseModel _httpBase;
         private readonly ISessionService _sessionService;
-        public ServicoController(IHttpBaseModel httpBase, ISessionService session)
+        private readonly UrlService _urlService;
+
+        public ServicoController(IHttpBaseModel httpBase, ISessionService session, UrlService urlService)
         {
             _httpBase = httpBase;
             _sessionService = session;
+            _urlService = urlService;
             Autenticate(_sessionService);
         }
 
-        public async Task<IActionResult> Index(bool filterClose = false, int page = 1, int itensperpage = 10)
+        public async Task<IActionResult> Index(bool filterClose, int page = 1, int itensperpage = 10)
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
@@ -27,19 +30,29 @@ namespace ServicoInWeb.Controllers
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
                 HttpResponseMessage response = new();
+                HttpResponseMessage total = new();
                 if (filterClose)
+                {
                     response = _httpBase.Client.GetAsync($"api/v1/servico/close?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
+                    total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&close=true").Result;
+                }
                 else
+                {
                     response = _httpBase.Client.GetAsync($"api/v1/servico/open?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
+                    total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&close=false").Result;
+                }
+
+                List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
+                    page, $"{_urlService.GetBaseUrl()}/Servico?filterClose={filterClose}", new Dictionary<string, string>());
 
                 if (response.IsSuccessStatusCode)
                 {
                     list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? [];
-                    ServicoViewModel view = new(list, filterClose);
+                    ServicoViewModel view = new(list.OrderByDescending(x => x.DataCriacao), filterClose, pagination);
                     return View(view);
                 }
 
-                return View(new ServicoViewModel([], filterClose));
+                return View(new ServicoViewModel(null, filterClose, new List<PaginationModel>()));
             }
             catch
             {

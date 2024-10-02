@@ -29,7 +29,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();//adicionar forma do cnpj e cpf serem colocados na pagina com a pontuação.
+                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();
                     empresa.Cnpj = Convert.ToUInt64(empresa.Cnpj).ToString(@"00\.000\.000\/0000\-00");
                     empresa.Cpf = Convert.ToUInt64(empresa.Cpf).ToString(@"000\.000\.000\-00");
                     return View(empresa);
