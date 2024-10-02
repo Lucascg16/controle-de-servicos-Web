@@ -2,6 +2,6 @@
 
 namespace ServicoInWeb.ViewModels
 {
-    public record UsuarioViewModel(List<UsuarioModel>? Usuarios);
+    public record UsuarioViewModel(List<UsuarioModel>? Usuarios, List<PaginationModel> Pagination);
     
 }

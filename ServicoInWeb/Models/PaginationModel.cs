@@ -20,7 +20,7 @@ namespace ServicoInWeb.Models
             var builder = new StringBuilder();
 
             builder.Append(uri);
-            builder.AppendFormat("&Page={0}", currentPage);
+            builder.AppendFormat("Page={0}", currentPage);
             builder.AppendFormat("&itensPerPage={0}", itemsPerPage);
             foreach (var parameter in parametersUri) 
             {

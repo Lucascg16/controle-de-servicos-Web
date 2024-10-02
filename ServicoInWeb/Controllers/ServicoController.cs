@@ -43,7 +43,7 @@ namespace ServicoInWeb.Controllers
                 }
 
                 List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
-                    page, $"{_urlService.GetBaseUrl()}/Servico?filterClose={filterClose}", new Dictionary<string, string>());
+                    page, $"{_urlService.GetBaseUrl()}/Servico?filterClose={filterClose}&", new Dictionary<string, string>());
 
                 if (response.IsSuccessStatusCode)
                 {
