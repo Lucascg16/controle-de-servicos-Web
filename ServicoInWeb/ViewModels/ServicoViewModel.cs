@@ -2,5 +2,5 @@
 
 namespace ServicoInWeb.ViewModels
 {
-    public record ServicoViewModel(IOrderedEnumerable<ServicoModel>? Servicos, bool FilterClose, List<PaginationModel> Pagination);
+    public record ServicoViewModel(List<ServicoModel>? Servicos, bool FilterClose, List<PaginationModel> Pagination);
 }

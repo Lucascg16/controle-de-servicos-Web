@@ -48,11 +48,11 @@ namespace ServicoInWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? [];
-                    ServicoViewModel view = new(list.OrderByDescending(x => x.DataCriacao), filterClose, pagination);
+                    ServicoViewModel view = new(list, filterClose, pagination);
                     return View(view);
                 }
 
-                return View(new ServicoViewModel(null, filterClose, new List<PaginationModel>()));
+                return View(new ServicoViewModel([], filterClose, new List<PaginationModel>()));
             }
             catch
             {
