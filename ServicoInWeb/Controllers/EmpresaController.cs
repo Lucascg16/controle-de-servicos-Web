@@ -15,7 +15,7 @@ namespace ServicoInWeb.Controllers
             _sessionService = session;
             Autenticate(_sessionService);
         }
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
@@ -25,7 +25,7 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/empresa?id={id}").Result;
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/empresa?id={Session.Usuario.EmpresaId}").Result;
 
                 if (response.IsSuccessStatusCode)
                 {

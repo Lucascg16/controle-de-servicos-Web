@@ -110,6 +110,11 @@ namespace ServicoInWeb.Controllers
 
                 var servico = await response.Content.ReadFromJsonAsync<AlterarServicoModel>() ?? new();
 
+                if(servico.EmpresaId != Session.Usuario.EmpresaId)
+                {
+                    return RedirectToAction("Index", "Servico");
+                }
+
                 return View(servico);
             }
             catch
