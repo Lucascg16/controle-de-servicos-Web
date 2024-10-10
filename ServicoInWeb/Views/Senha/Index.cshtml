@@ -1,0 +1,48 @@
+﻿@using ServicoInWeb.ViewModels
+@model AlterarSenhaViewModel;
+@{
+    ViewData["Title"] = "Alterar senha";
+}
+<div class="form-base">
+    <form asp-action="Index" asp-controller="Senha" method="post">
+        <div>
+            <h5 class="text-sm-center login-title">Alterar Senha</h5>
+            @if (TempData["MensagemError"] is not null)
+            {
+                <div class="text-lg-start text-danger">
+                    <p class="text-center">@TempData["MensagemError"]</p>
+                </div>
+            }
+            @if (TempData["Sucesso"] is not null)
+            {
+                <div class="text-lg-start text-success">
+                    <p class="text-center">@TempData["Sucesso"]</p>
+                </div>
+            }
+            <div class="col-lg-12">
+                <label class="form-label" for="">Senha atual</label>
+                <input type="password" asp-for="senha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.senha)</span>
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Nova senha</label>
+                <input type="password" asp-for="novaSenha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.novaSenha)</span>
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Confirmar a nova senha</label>
+                <input type="password" asp-for="confirmarSenha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.confirmarSenha)</span>
+            </div>
+        </div>
+        <div class="diviser"><hr></div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-login" type="submit">Alterar</button>
+        </div>
+    </form>
+</div>
+<style>
+    .diviser hr {
+        color: #f7f7f7;
+    }
+</style>
