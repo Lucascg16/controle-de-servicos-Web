@@ -3,6 +3,7 @@ using ServicoInWeb.Models;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
 using System.Net;
+using System.Text;
 
 namespace ServicoInWeb.Controllers
 {
@@ -98,7 +99,7 @@ namespace ServicoInWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> AlterarUsuario(int id)
+        public async Task<IActionResult> AlterarUsuario(Guid id)
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
@@ -106,7 +107,7 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario?id={id}").Result;
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario/vId?id={id}").Result;
 
                 var user = await response.Content.ReadFromJsonAsync<UsuarioModel>() ?? new();
 

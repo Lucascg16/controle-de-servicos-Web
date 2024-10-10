@@ -28,7 +28,7 @@
     <table>
         <caption>@Model.Usuarios.Count() Usuários</caption>
         <tr>
-            <th scope="col">Id</th>
+            <th scope="col"></th>
             <th scope="col">Nome</th>
             <th scope="col">Email</th>
             <th scope="col">Nivel de acesso</th>
@@ -36,7 +36,7 @@
         @foreach(var usuario in Model.Usuarios)
         {   
             <tr>
-                <th scope="row">@usuario.Id <a asp-action="AlterarUsuario" asp-controller="Usuario" asp-route-id="@usuario.Id"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a></th>
+                <th scope="row"><a asp-action="AlterarUsuario" asp-controller="Usuario" asp-route-id="@usuario.VId"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a></th>
                 <td>@usuario.Nome</td> 
                 <td>@usuario.Email</td>
                 <td>@Utilitarios.GetRoleEnum(usuario.Role)</td>
