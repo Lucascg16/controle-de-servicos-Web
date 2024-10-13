@@ -3,7 +3,6 @@ using ServicoInWeb.Models;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
 using System.Net;
-using System.Text;
 
 namespace ServicoInWeb.Controllers
 {
@@ -146,6 +145,31 @@ namespace ServicoInWeb.Controllers
             {
                 TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
                 return View(model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DesativarUsuario(int id)
+        {
+            if (id == int.Parse(Session.Id))
+                return StatusCode(500);
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+                HttpRequestMessage request = new(HttpMethod.Delete, $"api/v1/usuario?id={id}");
+                HttpResponseMessage response = _httpBase.Client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok();
+                }
+
+                return StatusCode(501);
+            }
+            catch
+            {
+                return StatusCode(400);
             }
         }
     }
