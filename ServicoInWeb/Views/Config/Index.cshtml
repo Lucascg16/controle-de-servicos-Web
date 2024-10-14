@@ -1,0 +1,51 @@
+﻿@model SessionModel;
+@{
+    ViewData["Title"] = "Configurações";
+}
+<div class="d-flex">
+    <div class="block u-card shadow_ m-0 d-grid" style="padding: 1.28rem 1.71rem; max-width: 300px">
+        <div class="center">
+            <div class="icon-circle me-4" style="color: black">
+                <i class="fa-solid fa-key"></i>
+            </div>
+            <span>Alterar senha</span>
+            <div class="w-100">
+                <a class="btn btn-primary w-100" asp-controller="Senha" asp-action="Index">Alterar</a>
+            </div>
+        </div>
+    </div>
+    @if (Model.Usuario.Dono)
+    {
+        <div class="block u-card shadow_ m-0 d-grid" style="padding: 1.28rem 1.71rem; max-width: 300px">
+            <div class="center">
+                <div class="icon-circle me-4" style="color: black">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <span>Desativar empresa</span>
+                <div class="w-100">
+                    <button class="btn btn-primary w-100" onclick="Desativar(@Model.Usuario.EmpresaId)" data-toggle="tooltip" title="Essa ação irá desativar a empresa e a conta de todos os usuários vinculados a ela, não é reversível">Desativar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function Desativar(id){
+        var confirma = confirm("Tem certeza que deseja desativar a conta, você será deslogado em seguida");
+
+        if (confirma == true) {
+            fetch(`/Empresa/DesativarConta/?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.status == 500) {
+                    alert("Algo deu errado tente novamente mais tarde");
+                }
+            });
+        }
+    }
+</script>

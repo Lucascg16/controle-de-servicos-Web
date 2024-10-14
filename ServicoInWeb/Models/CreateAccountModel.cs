@@ -14,6 +14,7 @@ namespace ServicoInWeb.Models
             Usuario.Email = model.Email;
             Usuario.Password = model.Password;
             Usuario.Role = Utilitarios.GetRoleString(RoleEnum.Admin);
+            Usuario.Dono = true;
             Empresa.Nome = model.NomeEmpresa;
             Empresa.Cnpj = model.Cnpj ?? string.Empty;
             Empresa.Cpf = model.Cpf ?? string.Empty;

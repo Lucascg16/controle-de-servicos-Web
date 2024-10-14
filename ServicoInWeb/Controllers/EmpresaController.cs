@@ -79,5 +79,20 @@ namespace ServicoInWeb.Controllers
             if (!string.IsNullOrEmpty(cpf) && cpf.Length < 14)
                 ModelState.AddModelError("Cpf", "O Cpf digitado não é valido");
         }
+
+        [HttpPost]
+        public IActionResult DesativarConta(int id)
+        {
+            _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/v1/empresa?id={id}");
+            var response = _httpBase.Client.Send(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode(500);
+            }
+
+            return RedirectToAction("Logout", "Login");
+        }
     }
 }
