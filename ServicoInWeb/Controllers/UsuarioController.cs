@@ -27,7 +27,7 @@ namespace ServicoInWeb.Controllers
             if (Session.Role == "Employee")
                 return RedirectToAction("AlterarUsuario", "Usuario");
 
-            List<UsuarioModel>? userList = [];
+            List<UsuarioModel>? userList;
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
@@ -151,9 +151,6 @@ namespace ServicoInWeb.Controllers
         [HttpPost]
         public IActionResult DesativarUsuario(int id)
         {
-            if (id == int.Parse(Session.Id))
-                return StatusCode(500);
-
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
