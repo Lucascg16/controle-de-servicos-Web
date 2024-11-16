@@ -1,7 +1,7 @@
 ﻿@using ServicoInWeb.ViewModels
 @model AlterarUsuarioViewModel;
 @{
-    ViewData["Title"] = "Alterar dados";
+    ViewData["Title"] = "Alterar usuário";
 }
 <div class="form-base">
     <form asp-action="AlterarUsuario" asp-controller="Usuario" method="post">
@@ -34,12 +34,13 @@
             </div>
 
             <div class="col-lg-12">
-                <label class="form-label" for="" data-toggle="tooltip" title="Alterar o email altera a forma que o usuário acessa a plataforma">Email*</label>
+                <label class="form-label" for="" data-toggle="tooltip"
+                    title="Alterar o email altera a forma que o usuário acessa a plataforma">Email*</label>
                 <input type="text" asp-for="Email" class="form-control" placeholder="mail@mail.com">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
             </div>
 
-            @if(Model.UserLogedRole == "Admin")
+            @if (Model.UserLogedRole == "Admin")
             {
                 <div class="col-lg-12">
                     <label class="form-label" for="">Acesso</label>
@@ -49,10 +50,12 @@
                     </select>
                 </div>
             }
-            <div class="diviser" style="color: #f7f7f7;"><hr></div>
+            <div class="diviser" style="color: #f7f7f7;">
+                <hr>
+            </div>
             <div>
                 <button class="btn btn-primary" type="submit">Alterar</button>
-                @if(Model.UserLogedRole == "Admin")
+                @if (Model.UserLogedRole == "Admin" && Model.Id != Model.UserLogedId)
                 {
                     <a class="btn btn-dark" onclick="Desativar(@Model.Id)">Desativar usuário</a>
                 }
@@ -60,6 +63,7 @@
         </div>
     </form>
 </div>
+
 <script>
     function Desativar(Id) {
         var confirma = confirm("Tem certeza que deseja desativar esse usuário, será necessário entrar em contato com o suporte para reativa-lo.");
@@ -79,10 +83,10 @@
                         window.location.href = "/Usuario/Index";
                     }, 3000);
                 }
-                if (response.status == 400){
+                if (response.status == 400) {
                     alert("Api inacessível, tente novamente mais tarde");
                 }
-                if(response.status == 500){
+                if (response.status == 500) {
                     alert("Não é possivel desativar o próprio perfil");
                 }
                 if (response.status == 501) {
@@ -91,5 +95,4 @@
             });
         }
     }
-
 </script>

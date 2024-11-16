@@ -53,6 +53,12 @@ body {
     border-radius: 10px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .u-card {
     box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.2);
     height: auto;

@@ -110,7 +110,7 @@ namespace ServicoInWeb.Controllers
 
                 var user = await response.Content.ReadFromJsonAsync<UsuarioModel>() ?? new();
 
-                return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, Utilitarios.GetRoleEnum(user.Role), user.EmpresaId, Session.Role));
+                return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, Utilitarios.GetRoleEnum(user.Role), user.EmpresaId, Session.Role ?? "", int.Parse(Session.Id)));
             }
             catch
             {

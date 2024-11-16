@@ -11,7 +11,8 @@
             </div>
             <span>Iniciar novo serviço</span>
             <div class="w-100">
-                <a class="btn btn-outline-primary text-decoration-none w-100" asp-action="CriarServico" asp-controller="Servico">Iniciar</a>
+                <a class="btn btn-outline-primary text-decoration-none w-100" asp-action="CriarServico"
+                    asp-controller="Servico">Iniciar</a>
             </div>
         </div>
     </div>
@@ -23,107 +24,121 @@
         </div>
     </div>
 </div>
-<div class="col-lg-12" style="padding: 0.58rem 1rem">
+<div>
     <span>Filtro de Serviços - </span>
     @if (Model.FilterClose)
     {
-        <span>Mostrando Serviços finalizados/cancelados:<a asp-action="Index" asp-controller="Servico" asp-route-filterClose="@false">Alterar</a></span>
+        <span>Mostrando Serviços finalizados/cancelados:<a asp-action="Index" asp-controller="Servico"
+                asp-route-filterClose="@false">Alterar</a></span>
     }
     else
     {
-        <span>Mostrando Serviços abertos:<a asp-action="Index" asp-controller="Servico" asp-route-filterClose="@true">Alterar</a></span>
+        <span>Mostrando Serviços abertos:<a asp-action="Index" asp-controller="Servico"
+                asp-route-filterClose="@true">Alterar</a></span>
     }
-    <table>
-        <caption>@Model.Servicos.Count() Serviços</caption>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Custos</th>
-            <th scope="col">Orçamento Inicial</th>
-            <th scope="col">Valor faturado</th>
-            <th scope="col">Lucro</th>
-            <th scope="col">Cancelado</th>
-            <th scope="col">Criado em</th>
-            <th scope="col">Finalizado em</th>
-        </tr>
-        @foreach (var servico in Model.Servicos)
-        {                        
+</div>
+@if (Model.Servicos.Count() != 0)
+{
+    <div class="container col-lg-12">
+        <table>
+            <caption>@Model.Servicos.Count() Serviços</caption>
             <tr>
-                <th scope="row">@servico.Id @if(!Model.FilterClose)
-                    {
-                        <a asp-action="AlterarServico" asp-controller="Servico" asp-route-id="@servico.Id"><i class="fa-regular fa-pen-to-square" style="color: black;"></i></a>
-                    }
-                </th>
-                <td>@servico.Nome</td>
-                <td>@servico.Descricao</td>
+                <th scope="col">Id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Custos</th>
+                <th scope="col">Orçamento Inicial</th>
+                <th scope="col">Valor faturado</th>
+                <th scope="col">Lucro</th>
+                <th scope="col">Cancelado</th>
+                <th scope="col">Criado em</th>
+                <th scope="col">Finalizado em</th>
+            </tr>
+            @foreach (var servico in Model.Servicos)
+            {
+                <tr>
+                    <th scope="row">@servico.Id @if (!Model.FilterClose)
+                        {
+                            <a asp-action="AlterarServico" asp-controller="Servico" asp-route-id="@servico.Id"><i
+                                    class="fa-regular fa-pen-to-square" style="color: black;"></i></a>
+                        }
+                    </th>
+                    <td>@servico.Nome</td>
+                    <td>@servico.Descricao</td>
 
-                @if (servico.Custos is null)
-                {
-                    <td>--</td>
-                }
-                else
-                {
-                    <td>R$@servico.Custos</td>
-                }
-
-                @if (servico.OrcamentoInicial is null)
-                {
-                    <td>--</td>
-                }
-                else
-                {
-                    <td>R$@servico.OrcamentoInicial</td>
-                }
-
-                @if (servico.ValorFaturado is null)
-                {
-                    <td>--</td>
-                }
-                else
-                {
-                    <td>R$@servico.ValorFaturado</td>
-                }
-
-                @if (servico.LucroLiquido is null)
-                {
-                    <td>--</td>
-                }
-                else
-                {
-                    <td>R$@servico.LucroLiquido</td>
-                }
-
-                @if (servico.Excluido)
-                {
-                    <td>sim</td>
-                }
-                else
-                {
-                    <td>Não</td>
-                }
-
-                <td>@servico.DataCriacao</td>
-
-                @if (servico.DataFinalizado is null)
-                {
-                    if (servico.Excluido)
+                    @if (servico.Custos is null)
                     {
                         <td>--</td>
                     }
                     else
                     {
-                        <td><button onclick="Finalizar(@servico.Id)">Finalizar</button></td>
+                        <td>R$@servico.Custos</td>
                     }
-                }
-                else
-                {
-                    <td>@servico.DataFinalizado</td>
-                }
-            </tr>
-        }
-    </table>
-</div>
+
+                    @if (servico.OrcamentoInicial is null)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td>R$@servico.OrcamentoInicial</td>
+                    }
+
+                    @if (servico.ValorFaturado is null)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td>R$@servico.ValorFaturado</td>
+                    }
+
+                    @if (servico.LucroLiquido is null)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td>R$@servico.LucroLiquido</td>
+                    }
+
+                    @if (servico.Excluido)
+                    {
+                        <td>sim</td>
+                    }
+                    else
+                    {
+                        <td>Não</td>
+                    }
+
+                    <td>@servico.DataCriacao</td>
+
+                    @if (servico.DataFinalizado is null)
+                    {
+                        if (servico.Excluido)
+                        {
+                            <td>--</td>
+                        }
+                        else
+                        {
+                            <td><button onclick="Finalizar(@servico.Id)">Finalizar</button></td>
+                        }
+                    }
+                    else
+                    {
+                        <td>@servico.DataFinalizado</td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div class="container">
+        <span>Nenhum Serviços iniciado pela sua empresa</span>
+    </div>
+}
 
 <script>
     function Finalizar(id) {
@@ -139,7 +154,6 @@
             }).then(response => {
                 window.location.reload();
             })
-
         }
     }
 </script>

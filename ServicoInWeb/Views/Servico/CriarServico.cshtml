@@ -25,21 +25,21 @@
                 </script>
             }
             <div class="col-lg-12">
-                <label class="form-label" for="">Nome Completo*</label>
-                <input type="text" asp-for="Nome" class="form-control">
+                <label class="form-label" for="Nome">Nome*</label>
+                <input type="text" asp-for="Nome" id="Nome" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Descrição</label>
-                <textarea asp-for="Descricao" rows="5" class="form-control"></textarea>
+                <label class="form-label" for="Descricao">Descrição</label>
+                <textarea asp-for="Descricao" id="Descricao" rows="5" class="form-control"></textarea>
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Custos</label>
-                <input type="number" value="0" asp-for="Custos" class="form-control">
+                <label class="form-label" for="Custos">Custos</label>
+                <input type="number" value="0" asp-for="Custos" id="Custos" class="form-control">
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Orçamento Inicial</label>
-                <input type="number" value="0" asp-for="OrcamentoInicial" class="form-control">
+                <label class="form-label" for="OrcamentoInicial">Orçamento Inicial</label>
+                <input type="number" value="0" asp-for="OrcamentoInicial" id="OrcamentoInicial" class="form-control">
             </div>
 
             <div class="diviser" style="color: #f7f7f7;"><hr></div>

@@ -13,8 +13,9 @@ namespace ServicoInWeb.ViewModels
         public RoleEnum Role { get; set; } = RoleEnum.none;
         public int EmpresaId { get; set; }
         public string UserLogedRole { get; set; } = string.Empty;
+        public int UserLogedId { get; set; } 
 
-        public AlterarUsuarioViewModel(int id, string? nome, string? email, RoleEnum role, int empresaId, string userLogedRole)
+        public AlterarUsuarioViewModel(int id, string? nome, string? email, RoleEnum role, int empresaId, string userLogedRole, int userLogedId)
         {
             Id = id;
             Nome = nome;
@@ -22,6 +23,7 @@ namespace ServicoInWeb.ViewModels
             Role = role;
             EmpresaId = empresaId;
             UserLogedRole = userLogedRole;
+            UserLogedId = userLogedId;
         }
 
         public AlterarUsuarioViewModel() { }
