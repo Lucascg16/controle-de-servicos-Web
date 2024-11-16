@@ -4,10 +4,10 @@
     {
         public HttpClient Client { get; set; }
 
-        public HttpBaseModel(HttpClient client)
+        public HttpBaseModel(HttpClient client, IConfiguration _configuration)
         {
             Client = client;
-            Client.BaseAddress = new Uri("https://localhost:7282/");
+            Client.BaseAddress = new Uri(_configuration.GetConnectionString("ApiUrl") ?? "");
         }
     }
 }
