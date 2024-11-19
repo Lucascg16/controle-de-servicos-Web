@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.Addinfra();
+builder.Services.Addinfra(builder.Configuration);
 
 builder.Services.AddSession(o =>
 {

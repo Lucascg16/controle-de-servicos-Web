@@ -1,0 +1,33 @@
+@using ServicoInWeb.ViewModels;
+@model EsqueciSenhaViewModel
+@{
+    ViewData["Title"] = "Esqueci minha senha";
+}
+<div class="form-base">
+    <h5 class="text-center">Digite o seu email</h5>
+    @if (TempData["MensagemError"] is not null)
+    {
+        <div class="text-lg-start text-danger">
+            <p class="text-center">@TempData["MensagemError"]</p>
+        </div>
+    }
+    @if (TempData["Sucesso"] is not null)
+    {
+        <div class="text-lg-start text-success">
+            <p class="text-center">@TempData["Sucesso"]</p>
+        </div>
+    }
+    <form asp-action="EsqueciSenha" asp-controller="Senha" method="post">
+        <div class="col-lg-12">
+            <label class="form-label" for="">Email</label>
+            <input type="text" asp-for="Email" class="form-control" placeholder="mail@mail.com">
+            <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
+        </div>
+        <div class="diviser" style="color: #f7f7f7;">
+            <hr>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-login" type="submit">Enviar email</button>
+        </div>
+    </form>
+</div>

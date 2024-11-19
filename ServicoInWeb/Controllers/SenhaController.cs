@@ -10,16 +10,19 @@ namespace ServicoInWeb.Controllers
     {
         public readonly IHttpBaseModel _httpBase;
         public readonly ISessionService _sessionService;
-        public SenhaController(ISessionService sessionService, IHttpBaseModel httpBase) 
+        public readonly IEmailService _EmailService;
+
+        public SenhaController(ISessionService sessionService, IHttpBaseModel httpBase, IEmailService emailService)
         {
             _sessionService = sessionService;
             _httpBase = httpBase;
+            _EmailService = emailService;
             Autenticate(_sessionService);
         }
 
         public IActionResult Index()
         {
-            if(Session is null) 
+            if (Session is null)
                 RedirectToAction("Index", "Login");
 
             return View();
@@ -28,9 +31,9 @@ namespace ServicoInWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] AlterarSenhaViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
-            if(model.novaSenha != model.confirmarSenha)
+            if (model.novaSenha != model.confirmarSenha)
             {
                 TempData["MensagemError"] = "As senhas não conferem";
                 return View(model);
@@ -39,16 +42,16 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                var request = new HttpRequestMessage(HttpMethod.Patch,$"api/v1/usuario/password?id={Session.Id}&senha={model.senha}&novaSenha={model.novaSenha}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"api/v1/usuario/password?id={Session.Id}&senha={model.senha}&novaSenha={model.novaSenha}");
                 HttpResponseMessage response = await _httpBase.Client.SendAsync(request);
 
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     TempData["Sucesso"] = "Senha alterada com sucesso";
                     return View(model);
                 }
 
-                if(response.StatusCode == HttpStatusCode.BadRequest)
+                if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
                     TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
                     return View(model);
@@ -58,6 +61,38 @@ namespace ServicoInWeb.Controllers
                 return View(model);
             }
             catch
+            {
+                TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
+                return View(model);
+            }
+        }
+
+        public IActionResult EsqueciSenha()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EsqueciSenha([FromForm] EsqueciSenhaViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, $"api/v1/auth/GeneratePassToken?email={model.Email}");
+                HttpResponseMessage response = await _httpBase.Client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _EmailService.SendEmailAsync(model.Email, await response.Content.ReadAsStringAsync());
+                    TempData["Sucesso"] = "Um email com o link de redefinição de senha foi enviado, verifique a caixa de span";
+                    return View(model);
+                }
+                TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+                return View(model);
+            }
+            catch (Exception ex)
             {
                 TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
                 return View(model);

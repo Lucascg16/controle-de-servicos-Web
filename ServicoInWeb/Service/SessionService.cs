@@ -44,7 +44,7 @@ namespace ServicoInWeb.Service
 
             var sessao = JsonConvert.DeserializeObject<SessionModel>(sessaoUsuario);
 
-            return sessao;
+            return sessao ?? new();
         }
 
         private async Task<UsuarioModel> GetUser(string token, int id)
@@ -55,7 +55,7 @@ namespace ServicoInWeb.Service
 
                 HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario?id={id}").Result;
 
-                return await response.Content.ReadFromJsonAsync<UsuarioModel>();
+                return await response.Content.ReadFromJsonAsync<UsuarioModel>() ?? new();//se for nulo retorna um vazio
             }
             catch 
             {
