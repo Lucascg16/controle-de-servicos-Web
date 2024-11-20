@@ -18,7 +18,7 @@ namespace ServicoInWeb.Service
 
         public void SendEmailAsync(string emailDestinatario, string token)
         {
-            string callBackUrl = $"{_UrlService.GetBaseUrl()}/RedefinirSenha?token={token}";//gera a url para retornar para a plataforma corretamente
+            string callBackUrl = $"{_UrlService.GetBaseUrl()}/Senha/RedefinirSenha?token={token}";//gera a url para retornar para a plataforma corretamente
 
             var Email = new MailMessage();
             Email.From = new MailAddress(_emailModel.EmailRemetente, _emailModel.Remetente);

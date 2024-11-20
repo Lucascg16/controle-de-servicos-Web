@@ -4,7 +4,7 @@ namespace ServicoInWeb.ViewModels
 {
     public class RedefinirSenhaViewModel
     {
-        public RedefinirSenhaViewModel(){}
+        public RedefinirSenhaViewModel() { }
 
         public RedefinirSenhaViewModel(string token, int id)
         {
@@ -12,9 +12,10 @@ namespace ServicoInWeb.ViewModels
             Id = id;
         }
 
-        public string? Token { get; set; }
+        public string Token { get; set; } = "";
         public int Id { get; set; }
         [Required(ErrorMessage = "O campo senha é obrigatório")]
+        [MinLength(6, ErrorMessage = "A senha deve conter pelo menos 6 digitos")]
         public string? Senha { get; set; }
         [Required(ErrorMessage = "Confirme sua senha")]
         [Compare("Senha", ErrorMessage = "As senhas informadas não conferem")]

@@ -35,7 +35,7 @@ namespace ServicoInWeb.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            if (model.novaSenha != model.confirmarSenha)
+            if (model.NovaSenha != model.ConfirmarSenha)
             {
                 TempData["MensagemError"] = "As senhas não conferem";
                 return View(model);
@@ -44,7 +44,7 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                var request = new HttpRequestMessage(HttpMethod.Patch, $"api/v1/usuario/password?id={Session.Id}&senha={model.senha}&novaSenha={model.novaSenha}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"api/v1/usuario/password?id={Session.Id}&senha={model.Senha}&novaSenha={model.NovaSenha}");
                 HttpResponseMessage response = await _httpBase.Client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
@@ -96,7 +96,7 @@ namespace ServicoInWeb.Controllers
             }
             catch (Exception ex)
             {
-                TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
+                TempData["MensagemError"] = $"Ocorreu um erro, tente novamente mais tarde: [{ex.Message}]";
                 return View(model);
             }
         }
@@ -124,7 +124,7 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {model.Token}");
-                HttpRequestMessage request = new(HttpMethod.Post, $"api/v1/usuario/password?id={Session.Id}&novaSenha={model.Senha}");
+                HttpRequestMessage request = new(HttpMethod.Patch, $"api/v1/usuario/password?id={model.Id}&novaSenha={model.Senha}");
                 HttpResponseMessage response = await _httpBase.Client.SendAsync(request);
 
                 if(response.IsSuccessStatusCode){
@@ -132,12 +132,12 @@ namespace ServicoInWeb.Controllers
                     return View(model);
                 }
                 
-                TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+                TempData["MensagemError"] = "Requisição não autorizada, favor verificar com o administrador";
                 return View(model);
             }
-            catch
+            catch(Exception ex)
             {
-                TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
+                TempData["MensagemError"] = $"Algo deu errado, tente novamente mais tarde: [{ex.Message}]";
                 return View(model);
             }
         }
