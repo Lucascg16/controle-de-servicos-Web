@@ -1,4 +1,5 @@
-﻿using ServicoInWeb.Models;
+﻿using System.IdentityModel.Tokens.Jwt;
+using ServicoInWeb.Models;
 
 namespace ServicoInWeb.Service
 {
@@ -19,7 +20,7 @@ namespace ServicoInWeb.Service
 
         public static RoleEnum GetRoleEnum(string role)
         {
-            switch (role) 
+            switch (role)
             {
                 case "Admin":
                     return RoleEnum.Admin;
@@ -27,6 +28,26 @@ namespace ServicoInWeb.Service
                     return RoleEnum.Funcionario;
                 default:
                     return RoleEnum.none;
+            }
+        }
+
+        public static bool ValidaTokenExpirado(JwtSecurityToken token)
+        {
+            try
+            {
+                var exp = token.Payload.Expiration;
+
+                if (exp.HasValue)
+                {
+                    var expirationDate = DateTimeOffset.FromUnixTimeSeconds(exp.Value).UtcDateTime;
+
+                    return expirationDate <= DateTime.UtcNow;//Se a data de expiração for menor que a atual retorna true 
+                }
+                return false;
+            }
+            catch
+            {
+                return true;
             }
         }
     }

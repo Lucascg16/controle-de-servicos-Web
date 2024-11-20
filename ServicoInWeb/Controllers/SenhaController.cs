@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using ServicoInWeb.Models;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
 namespace ServicoInWeb.Controllers
@@ -95,6 +97,47 @@ namespace ServicoInWeb.Controllers
             catch (Exception ex)
             {
                 TempData["MensagemError"] = "Ocorreu um erro, tente novamente mais tarde";
+                return View(model);
+            }
+        }
+
+        public IActionResult RedefinirSenha(string token)
+        {
+            var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            if (Utilitarios.ValidaTokenExpirado(decodeToken))
+            {
+                TempData["MensagemError"] = "Token expirado favor solicitar redefinição de senha novamente.";
+                return View(new RedefinirSenhaViewModel());
+            }
+
+            return View(new RedefinirSenhaViewModel(token, int.Parse(decodeToken.Claims.FirstOrDefault(x => x.Type == "id").Value)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RedefinirSenha([FromForm] RedefinirSenhaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {model.Token}");
+                HttpRequestMessage request = new(HttpMethod.Post, $"api/v1/usuario/password?id={Session.Id}&novaSenha={model.Senha}");
+                HttpResponseMessage response = await _httpBase.Client.SendAsync(request);
+
+                if(response.IsSuccessStatusCode){
+                    TempData["Sucesso"] = "Senha redefinida com sucesso";
+                    return View(model);
+                }
+                
+                TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
+                return View(model);
+            }
+            catch
+            {
+                TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
                 return View(model);
             }
         }

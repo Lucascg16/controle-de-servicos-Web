@@ -21,7 +21,7 @@ namespace ServicoInWeb.Service
             string callBackUrl = $"{_UrlService.GetBaseUrl()}/RedefinirSenha?token={token}";//gera a url para retornar para a plataforma corretamente
 
             var Email = new MailMessage();
-            Email.From = new MailAddress(_emailModel.EmailRemetente, "Controle de serviços");
+            Email.From = new MailAddress(_emailModel.EmailRemetente, _emailModel.Remetente);
             Email.To.Add(emailDestinatario);
             Email.Subject = "Redefinição de senha";
             Email.Body = EmailTemplates.RedefinirSenha.Replace("{callBackUrl}", callBackUrl); 

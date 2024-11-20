@@ -1,0 +1,48 @@
+@using ServicoInWeb.ViewModels;
+@model RedefinirSenhaViewModel
+@{
+    Layout = "_layout_Login";
+    ViewData["Title"] = "Redefinir Senha";
+}
+<div class="form-base">
+    <form asp-action="RedefinirSenha" asp-controller="Senha" method="post">
+        <div>
+            <h5 class="text-sm-center login-title">Alterar Senha</h5>
+            @if (TempData["MensagemError"] is not null)
+            {
+                <div class="text-lg-start text-danger">
+                    <p class="text-center">@TempData["MensagemError"]</p>
+                </div>
+            }
+            @if (TempData["Sucesso"] is not null)
+            {
+                <div class="text-lg-start text-success">
+                    <p class="text-center">@TempData["Sucesso"]</p>
+                </div>
+            }
+            <input type="text" asp-for="Id" hidden>
+            <input type="text" asp-for="Token" hidden>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Senha</label>
+                <input type="password" asp-for="Senha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.Senha)</span>
+            </div>
+            <div class="col-lg-12">
+                <label class="form-label" for="">Confirmar senha</label>
+                <input type="password" asp-for="ConfirmarSenha" class="form-control">
+                <span class="text-danger">@Html.ValidationMessageFor(x => x.ConfirmarSenha)</span>
+            </div>
+        </div>
+        <div class="diviser">
+            <hr>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-login" type="submit">Redefinir</button>
+        </div>
+    </form>
+</div>
+<style>
+    .diviser hr {
+        color: #f7f7f7;
+    }
+</style>

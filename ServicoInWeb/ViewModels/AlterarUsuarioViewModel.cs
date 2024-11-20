@@ -9,6 +9,7 @@ namespace ServicoInWeb.ViewModels
         [Required(ErrorMessage = "Nome é obriagtório")]
         public string? Nome { get; set; } = string.Empty;
         [Required(ErrorMessage = "Email é obrigatório")]
+        [EmailAddress(ErrorMessage = "O email digitado não é valido")]
         public string? Email { get; set; } = string.Empty;
         public RoleEnum Role { get; set; } = RoleEnum.none;
         public int EmpresaId { get; set; }
