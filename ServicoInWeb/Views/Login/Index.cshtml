@@ -24,19 +24,13 @@
                 <input type="password" asp-for="Password" class="form-control" placeholder="Sua senha">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
             </div>
-            <div>
-                <a asp-action="EsqueciSenha" asp-controller="Senha">Esqueci minha senha</a>
+            <div class="d-grid">
+                <a class="d-flex justify-content-end" asp-action="EsqueciSenha" asp-controller="Senha">Esqueci minha senha</a>
             </div>
         </div>
-        <div class="diviser"><hr></div>
         <div class="d-grid">
             <button class="btn btn-primary btn-login" type="submit">Entrar</button>
             <p class="text-center">Não tem conta? <a asp-action="CreateAccount" asp-controller="Login" class="text-end">Cadastro</a></p>
         </div>
     </form>
 </div>
-<style>
-    .diviser hr{
-        color: #f7f7f7;
-    }
-</style>

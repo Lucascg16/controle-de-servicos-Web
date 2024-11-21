@@ -3,6 +3,7 @@
 @{
     Layout = "_layout_Login";
     ViewData["Title"] = "Cadastro";
+    string tooltip = "A senha deve conter no minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 número, 1 caractere especial";
 }
 <div class="form-base">
     <form asp-action="CreateAccount" asp-controller="Login" method="post">
@@ -26,23 +27,23 @@
                 </script>
             }
             <div class="col-lg-12">
-                <label class="form-label" for="">Nome Completo*</label>
+                <label class="form-label" for="nome">Nome Completo</label>
                 <input type="text" asp-for="Nome" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Email*</label>
+                <label class="form-label" for="">Email</label>
                 <input type="text" asp-for="Email" class="form-control" placeholder="mail@mail.com">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Senha*</label>
+                <label class="form-label" for="">Senha <i class="fa-regular fa-circle-question fa-sm"
+                        data-toggle="tooltip" data-placement="right" title="@tooltip"></i></label>
                 <input type="password" asp-for="Password" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
             </div>
-
             <div class="col-lg-12">
-                <label class="form-label" for="">Empresa*</label>
+                <label class="form-label" for="">Empresa</label>
                 <input type="text" asp-for="NomeEmpresa" class="form-control" placeholder="Nome da empresa">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.NomeEmpresa)</span>
             </div>
@@ -55,7 +56,9 @@
                 <input type="text" asp-for="Cpf" id="Cpf" class="form-control" placeholder="###.###.###-##">
             </div>
         </div>
-        <div class="diviser"><hr></div>
+        <div class="diviser">
+            <hr>
+        </div>
         <div class="d-grid">
             <button class="btn btn-primary btn-login" type="submit">Criar conta</button>
         </div>
@@ -75,5 +78,5 @@
     document.getElementById('Cpf').addEventListener('input', function (e) {
         var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/);
         e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + (x[4] ? '-' + x[4] : '');
-    });
+    });]
 </script>

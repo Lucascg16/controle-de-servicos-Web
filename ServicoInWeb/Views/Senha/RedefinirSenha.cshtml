@@ -3,6 +3,7 @@
 @{
     Layout = "_layout_Login";
     ViewData["Title"] = "Redefinir Senha";
+    string tooltip = "A senha deve conter no minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 número, 1 caractere especial";
 }
 <div class="form-base">
     <form asp-action="RedefinirSenha" asp-controller="Senha" method="post">
@@ -28,7 +29,8 @@
             <input type="text" asp-for="Id" hidden>
             <input type="text" asp-for="Token" hidden>
             <div class="col-lg-12">
-                <label class="form-label" for="">Senha</label>
+                <label class="form-label" for="">Senha <i class="fa-regular fa-circle-question fa-sm"
+                        data-toggle="tooltip" data-placement="right" title="@tooltip"></i></label>
                 <input type="password" asp-for="Senha" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Senha)</span>
             </div>

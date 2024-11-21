@@ -2,6 +2,7 @@
 @model AlterarUsuarioViewModel;
 @{
     ViewData["Title"] = "Alterar usuário";
+    string alerta = "Alterar o email altera a forma que o usuário acessa a plataforma";
 }
 <div class="form-base">
     <form asp-action="AlterarUsuario" asp-controller="Usuario" method="post">
@@ -27,15 +28,16 @@
             <input type="text" asp-for="Id" value="@Model.Id" hidden>
             <input type="text" asp-for="EmpresaId" value="@Model.EmpresaId" hidden>
             <input type="text" asp-for="UserLogedRole" hidden>
+            <input type="text" asp-for="UserLogedId" hidden>
             <div class="col-lg-12">
-                <label class="form-label" for="">Nome Completo*</label>
+                <label class="form-label" for="">Nome Completo</label>
                 <input type="text" asp-for="Nome" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Nome)</span>
             </div>
 
             <div class="col-lg-12">
-                <label class="form-label" for="" data-toggle="tooltip"
-                    title="Alterar o email altera a forma que o usuário acessa a plataforma">Email*</label>
+                <label class="form-label" for="">Email <i class="fa-regular fa-circle-question fa-sm"
+                        data-toggle="tooltip" data-placement="right" title="@alerta"></i></label>
                 <input type="text" asp-for="Email" class="form-control" placeholder="mail@mail.com">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Email)</span>
             </div>

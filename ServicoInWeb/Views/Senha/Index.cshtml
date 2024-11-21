@@ -2,6 +2,7 @@
 @model AlterarSenhaViewModel;
 @{
     ViewData["Title"] = "Alterar senha";
+    string tooltip = "A senha deve conter no minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 número, 1 caractere especial";
 }
 <div class="form-base">
     <form asp-action="Index" asp-controller="Senha" method="post">
@@ -25,7 +26,8 @@
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Senha)</span>
             </div>
             <div class="col-lg-12">
-                <label class="form-label" for="">Nova senha</label>
+                <label class="form-label" for="">Nova senha<i class="fa-regular fa-circle-question fa-sm"
+                        data-toggle="tooltip" data-placement="right" title="@tooltip"></i></label>
                 <input type="password" asp-for="NovaSenha" class="form-control">
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.NovaSenha)</span>
             </div>
@@ -35,7 +37,9 @@
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.ConfirmarSenha)</span>
             </div>
         </div>
-        <div class="diviser"><hr></div>
+        <div class="diviser">
+            <hr>
+        </div>
         <div class="d-grid">
             <button class="btn btn-primary btn-login" type="submit">Alterar</button>
         </div>

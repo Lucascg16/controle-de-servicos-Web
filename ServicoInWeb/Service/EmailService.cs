@@ -46,6 +46,6 @@ namespace ServicoInWeb.Service
     }
 
     public class EmailTemplates{
-        public static string RedefinirSenha = "Conforme solicitado segue o link para redefinição de senha: <a href='{callBackUrl}'>Clique aqui<a>. <br> Caso não tenha solicitado a troca de senha por favor desconsidere o e-mail";
+        public static string RedefinirSenha = "Conforme solicitado segue o link para redefinição de senha: <a href='{callBackUrl}'>Clique aqui</a>. <br> Caso não tenha solicitado a troca de senha por favor desconsidere o e-mail";
     }
 }
