@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicoInWeb.Models;
+using ServicoInWeb.Models.Enum;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
 using System.Net;
@@ -20,39 +21,32 @@ namespace ServicoInWeb.Controllers
             Autenticate(_sessionService);
         }
 
-        public async Task<IActionResult> Index(bool filterClose, int page = 1, int itensperpage = 10)
+        public async Task<IActionResult> Index(ServicoFlagEnum flag, int page = 1, int itensperpage = 10)
         {
-            if(Session is null)
+            if (Session is null)
                 return RedirectToAction("Index", "Login");
 
-            List<ServicoModel> list = new();
+            List<ServicoModel> list;
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                HttpResponseMessage response = new();
-                HttpResponseMessage total = new();
-                if (filterClose)
-                {
-                    response = _httpBase.Client.GetAsync($"api/v1/servico/close?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
-                    total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&close=true").Result;
-                }
-                else
-                {
-                    response = _httpBase.Client.GetAsync($"api/v1/servico/open?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
-                    total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&close=false").Result;
-                }
+                HttpResponseMessage response;
+                HttpResponseMessage total;
+
+                response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&flag={Utilitarios.GetFlagString(flag)}&page={page}&itensPerPage={itensperpage}").Result;
+                total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&flag={Utilitarios.GetFlagString(flag)}").Result;
 
                 List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
-                    page, $"{_urlService.GetBaseUrl()}/Servico?filterClose={filterClose}&", new Dictionary<string, string>());
+                    page, $"{_urlService.GetBaseUrl()}/Servico?flag={Utilitarios.GetFlagString(flag)}&", []);
 
                 if (response.IsSuccessStatusCode)
                 {
                     list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? [];
-                    ServicoViewModel view = new(list, filterClose, pagination);
+                    ServicoViewModel view = new(list, flag, pagination);
                     return View(view);
                 }
 
-                return View(new ServicoViewModel([], filterClose, new List<PaginationModel>()));
+                return View(new ServicoViewModel([], flag, []));
             }
             catch
             {
@@ -100,7 +94,7 @@ namespace ServicoInWeb.Controllers
 
         public async Task<IActionResult> AlterarServico(int id)
         {
-            if(Session is null)
+            if (Session is null)
                 return RedirectToAction("Index", "Login");
 
             try
@@ -110,7 +104,7 @@ namespace ServicoInWeb.Controllers
 
                 var servico = await response.Content.ReadFromJsonAsync<AlterarServicoModel>() ?? new();
 
-                if(servico.EmpresaId != Session.Usuario.EmpresaId)
+                if (servico.EmpresaId != Session.Usuario.EmpresaId)
                 {
                     return RedirectToAction("Index", "Servico");
                 }
@@ -124,9 +118,9 @@ namespace ServicoInWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult AlterarServico([FromForm]AlterarServicoModel model)
+        public IActionResult AlterarServico([FromForm] AlterarServicoModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
 
             try
@@ -152,7 +146,7 @@ namespace ServicoInWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult FinalizarServico(int Id, double Faturamento) 
+        public IActionResult FinalizarServico(int Id, double Faturamento)
         {
             try
             {
@@ -162,7 +156,7 @@ namespace ServicoInWeb.Controllers
                 return Ok();
             }
             catch
-            { 
+            {
                 return BadRequest();
             }
         }

@@ -1,4 +1,5 @@
-﻿@using ServicoInWeb.ViewModels
+﻿@using ServicoInWeb.Models.Enum;
+@using ServicoInWeb.ViewModels
 @model ServicoViewModel;
 @{
     ViewData["Title"] = "Serviços";
@@ -24,18 +25,20 @@
         </div>
     </div>
 </div>
-<div>
-    <span>Filtro de Serviços - </span>
-    @if (Model.FilterClose)
-    {
-        <span>Mostrando Serviços finalizados/cancelados:<a asp-action="Index" asp-controller="Servico"
-                asp-route-filterClose="@false">Alterar</a></span>
-    }
-    else
-    {
-        <span>Mostrando Serviços abertos:<a asp-action="Index" asp-controller="Servico"
-                asp-route-filterClose="@true">Alterar</a></span>
-    }
+<div class="container">
+    <form class="row" method="get" asp-action="Index" asp-controller="Servico">
+        <span class="">Filtro de serviço</span>
+        <div class="col col-2">
+            <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select col-sm-2">
+                <option value="@ServicoFlagEnum.Ativo">Ativo</option>
+                <option value="@ServicoFlagEnum.Cancelado">Cancelado</option>
+                <option value="@ServicoFlagEnum.Finalizado">Finalizado</option>
+            </select>
+        </div>
+        <div class="col-sm">
+            <button class="btn btn-primary" type="submit">Filtrar</button>
+        </div>
+    </form>
 </div>
 @if (Model.Servicos.Count() != 0)
 {
@@ -57,7 +60,7 @@
             @foreach (var servico in Model.Servicos)
             {
                 <tr>
-                    <th scope="row">@servico.Id @if (!Model.FilterClose)
+                    <th scope="row">@servico.Id @if (Model.Flag == ServicoFlagEnum.Ativo)
                         {
                             <a asp-action="AlterarServico" asp-controller="Servico" asp-route-id="@servico.Id"><i
                                     class="fa-regular fa-pen-to-square" style="color: black;"></i></a>
@@ -136,7 +139,7 @@
 else
 {
     <div class="container">
-        <span>Nenhum Serviços iniciado pela sua empresa</span>
+        <span>Nenhum serviços para mostrar nesse filtro</span>
     </div>
 }
 
