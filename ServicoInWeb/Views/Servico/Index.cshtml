@@ -1,4 +1,5 @@
-﻿@using ServicoInWeb.Models.Enum;
+﻿@using ServicoInWeb.Service;
+@using ServicoInWeb.Models.Enum;
 @using ServicoInWeb.ViewModels
 @model ServicoViewModel;
 @{
@@ -28,12 +29,15 @@
 <div class="container">
     <form class="row" method="get" asp-action="Index" asp-controller="Servico">
         <span class="">Filtro de serviço</span>
-        <div class="col col-2">
-            <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select col-sm-2">
+        <div class="col-sm-2">
+            <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select">
                 <option value="@ServicoFlagEnum.Ativo">Ativo</option>
                 <option value="@ServicoFlagEnum.Cancelado">Cancelado</option>
                 <option value="@ServicoFlagEnum.Finalizado">Finalizado</option>
             </select>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" id=nome asp-for="@Model.NomeServico" placeholder="Nome" class="form-control">
         </div>
         <div class="col-sm">
             <button class="btn btn-primary" type="submit">Filtrar</button>
@@ -43,8 +47,9 @@
 @if (Model.Servicos.Count() != 0)
 {
     <div class="container col-lg-12">
+        <span class="form-text">Exibindo: @Model.Servicos.Count()</span>
         <table>
-            <caption>@Model.Servicos.Count() Serviços</caption>
+            <caption>Exibindo Serviços @Utilitarios.GetFlagString(Model.Flag)s</caption>
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nome</th>
@@ -160,3 +165,9 @@ else
         }
     }
 </script>
+
+<style>
+    .row>*{
+        padding-right: 0%;
+    }
+</style>
