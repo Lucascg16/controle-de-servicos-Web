@@ -47,9 +47,9 @@
 @if (Model.Servicos.Count() != 0)
 {
     <div class="container col-lg-12">
-        <span class="form-text">Exibindo: @Model.Servicos.Count()</span>
+        <span class="form-text">Exibindo Serviços @Utilitarios.GetFlagString(Model.Flag)s</span>
         <table>
-            <caption>Exibindo Serviços @Utilitarios.GetFlagString(Model.Flag)s</caption>
+            <caption>Exibindo: @Model.Servicos.Count()</caption>
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nome</th>
