@@ -18,24 +18,28 @@ html {
 }
 
 body {
-    font-family: Times New Roman;
+    font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 60px;
+    background-image: linear-gradient(45deg, #0093e9, #80d0c7);
 }
 
 .form-base {
-    display: grid;
-    padding: 10px 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 450px;
+    max-width: 400px;
     margin: 0 auto;
+    padding: 40px;
     border: hidden 1px;
     border-radius: 40px;
     background-color: #f7f7f7;
 }
 
 .form-control {
-    width: 100%;
-    border-radius: 10px;
+    display: inline-block; 
+    margin-bottom: 15px;
 }
 
 .form-select {
@@ -45,13 +49,25 @@ body {
 
 .form-label {
     margin-left: 5px;
+    margin-top: 1px;
     margin-bottom: 0;
 }
 
 .btn {
     margin-bottom: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 20px;
+    background-color: mintcream;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
 
 .u-card {
     box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.2);

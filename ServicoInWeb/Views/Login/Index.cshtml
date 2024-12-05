@@ -7,7 +7,7 @@
 <div class="form-base">
     <form asp-action="Index" asp-controller="Login" method="post">
         <div>
-            <h5 class="text-sm-center login-title">Login</h5>
+            <h2 class="text-sm-center login-title">Login</h2>
             @if (TempData["MensagemError"] is not null)
             {
                 <div class="text-lg-start text-danger">
@@ -25,7 +25,7 @@
                 <span class="text-danger">@Html.ValidationMessageFor(x => x.Password)</span>
             </div>
         </div>
-        <div class="diviser"><hr></div>
+
         <div class="d-grid">
             <button class="btn btn-primary btn-login" type="submit">Entrar</button>
             <p class="text-center">Não tem conta? <a asp-action="CreateAccount" asp-controller="Login" class="text-end">Cadastro</a></p>
