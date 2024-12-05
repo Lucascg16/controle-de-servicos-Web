@@ -20,7 +20,7 @@ namespace ServicoInWeb.Controllers
             Autenticate(_sectionService);
         }
 
-        public async Task<IActionResult> Index(int page = 1, int itensperpage = 20)
+        public async Task<IActionResult> Index(int page = 1, int itensperpage = 20, string nomeUsuario = "")
         {
             if(Session is null)
                 return RedirectToAction("Index", "Login");
@@ -31,7 +31,7 @@ namespace ServicoInWeb.Controllers
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
-                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario/All?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}").Result;
+                HttpResponseMessage response = _httpBase.Client.GetAsync($"api/v1/usuario/All?empresaId={Session.Usuario.EmpresaId}&page={page}&itensPerPage={itensperpage}&nome={nomeUsuario}").Result;
                 HttpResponseMessage total = _httpBase.Client.GetAsync($"api/v1/usuario/total?empresaId={Session.Usuario.EmpresaId}").Result;
 
                 List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage, page,

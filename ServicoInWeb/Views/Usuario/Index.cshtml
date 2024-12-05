@@ -17,6 +17,20 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <form class="row" method="get" asp-action="Index" asp-controller="Usuario">
+        <span class="form-text">Filtro</span>
+        <div class="col-sm-2">
+            <input type="text" id=nome asp-for="@Model.NomeUsuario" placeholder="Nome" class="form-control">
+        </div>
+        <div class="col-sm">
+            <button class="btn btn-primary" type="submit">Filtrar</button>
+        </div>
+    </form>
+</div>
+
+
 <div class="col-12">
     <div class="row mt-4">
         <div class="col-12">

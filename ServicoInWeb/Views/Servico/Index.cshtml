@@ -28,7 +28,7 @@
 </div>
 <div class="container">
     <form class="row" method="get" asp-action="Index" asp-controller="Servico">
-        <span class="">Filtro de serviço</span>
+        <span class="form-text">Filtro de serviço</span>
         <div class="col-sm-2">
             <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select">
                 <option value="@ServicoFlagEnum.Ativo">Ativo</option>
@@ -72,7 +72,14 @@
                         }
                     </th>
                     <td>@servico.Nome</td>
-                    <td>@servico.Descricao</td>
+                    @if (servico.Descricao is null)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td>@servico.Descricao</td>
+                    }
 
                     @if (servico.Custos is null)
                     {
@@ -167,7 +174,7 @@ else
 </script>
 
 <style>
-    .row>*{
+    .row>* {
         padding-right: 0%;
     }
 </style>
