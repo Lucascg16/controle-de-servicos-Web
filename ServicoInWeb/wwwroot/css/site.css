@@ -22,6 +22,10 @@ body {
     margin-bottom: 60px;
 }
 
+.copyLink{
+    text-decoration: none;
+}
+
 .form-base {
     display: grid;
     padding: 10px 50px;
