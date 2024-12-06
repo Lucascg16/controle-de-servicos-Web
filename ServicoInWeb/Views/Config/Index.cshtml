@@ -2,36 +2,39 @@
 @{
     ViewData["Title"] = "Configurações";
 }
-<div class="d-flex">
-    <div class="block u-card shadow_ m-0 d-grid" style="padding: 1.28rem 1.71rem; max-width: 300px">
-        <div class="center">
-            <div class="icon-circle me-4" style="color: black">
+<div class="d-flex gap-3">
+    <div class="block u-card shadow_ d-grid" style="padding: 1.28rem 1.71rem; max-width: 300px">
+        <div class="row">
+            <div class="icon-circle col-sm-1" style="color: black; align-self: center;">
                 <i class="fa-solid fa-key"></i>
             </div>
-            <span>Alterar senha</span>
-            <div class="w-100">
+            <div class="col">
+                <span>Alterar senha</span>
                 <a class="btn btn-primary w-100" asp-controller="Senha" asp-action="Index">Alterar</a>
             </div>
         </div>
     </div>
     @if (Model.Usuario.Dono)
     {
-        <div class="block u-card shadow_ m-0 d-grid" style="padding: 1.28rem 1.71rem; max-width: 300px">
-            <div class="center">
-                <div class="icon-circle me-4" style="color: black">
+        <div class="block u-card shadow_ d-grid" style="padding: 1.28rem 1.71rem;">
+            <div class="row">
+                <div class="icon-circle col-sm-1" style="color: black; align-self: center;">
                     <i class="fa-solid fa-ban"></i>
                 </div>
-                <span>Desativar empresa</span>
-                <div class="w-100">
-                    <button class="btn btn-primary w-100" onclick="Desativar(@Model.Usuario.EmpresaId)" data-toggle="tooltip" title="Essa ação irá desativar a empresa e a conta de todos os usuários vinculados a ela, não é reversível">Desativar</button>
+                <div class="col">
+                    <span>Desativar empresa</span>
+                    <button class="btn btn-primary w-100" onclick="Desativar(@Model.Usuario.EmpresaId)"
+                        data-toggle="tooltip"
+                        title="Essa ação irá desativar a empresa e a conta de todos os usuários vinculados a ela, não é reversível">Desativar</button>
                 </div>
             </div>
+
         </div>
     }
 </div>
 
 <script>
-    function Desativar(id){
+    function Desativar(id) {
         var confirma = confirm("Tem certeza que deseja desativar a conta, você será deslogado em seguida");
 
         if (confirma == true) {
@@ -49,3 +52,9 @@
         }
     }
 </script>
+
+<style>
+    .u-card {
+        min-width: 300px;
+    }
+</style>
