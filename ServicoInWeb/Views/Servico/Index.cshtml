@@ -7,12 +7,12 @@
 }
 <div class="col-lg-4">
     <div class="block u-card shadow_ m-0" style="padding: 1.28rem 1.71rem">
-        <div class="center">
-            <div class="icon-circle me-4" style="color: black">
+        <div class="row">
+            <div class="icon-circle col-sm-1" style="color: black; align-self: center;">
                 <i class="fa-solid fa-plus"></i>
             </div>
-            <span>Iniciar novo serviço</span>
-            <div class="w-100">
+            <div class="col">
+                <span>Iniciar novo serviço</span>
                 <a class="btn btn-outline-primary text-decoration-none w-100" asp-action="CriarServico"
                     asp-controller="Servico">Iniciar</a>
             </div>
@@ -29,14 +29,14 @@
 <div class="container">
     <form class="row" method="get" asp-action="Index" asp-controller="Servico">
         <span class="form-text">Filtro de serviço</span>
-        <div class="col-sm-2">
+        <div class="col-lg-2">
             <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select">
                 <option value="@ServicoFlagEnum.Ativo">Ativo</option>
                 <option value="@ServicoFlagEnum.Cancelado">Cancelado</option>
                 <option value="@ServicoFlagEnum.Finalizado">Finalizado</option>
             </select>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             <input type="text" id=nome asp-for="@Model.NomeServico" placeholder="Nome" class="form-control">
         </div>
         <div class="col-sm">
@@ -172,9 +172,3 @@ else
         }
     }
 </script>
-
-<style>
-    .row>* {
-        padding-right: 0%;
-    }
-</style>
