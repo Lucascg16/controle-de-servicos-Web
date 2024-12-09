@@ -9,7 +9,7 @@ namespace ServicoInWeb.Controllers
         private readonly IHttpBaseModel _httpBase;
         private readonly ISessionService _sessionService;
 
-        public EmpresaController(IHttpBaseModel httpBase, ISessionService session) 
+        public EmpresaController(IHttpBaseModel httpBase, ISessionService session)
         {
             _httpBase = httpBase;
             _sessionService = session;
@@ -17,7 +17,7 @@ namespace ServicoInWeb.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            if(Session is null)
+            if (Session is null)
                 return RedirectToAction("Index", "Login");
             if (Session.Role == "Employee")
                 return RedirectToAction("Index", "Home");
@@ -29,7 +29,7 @@ namespace ServicoInWeb.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>();
+                    var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>() ?? new();
                     empresa.Cnpj = Convert.ToUInt64(empresa.Cnpj).ToString(@"00\.000\.000\/0000\-00");
                     empresa.Cpf = Convert.ToUInt64(empresa.Cpf).ToString(@"000\.000\.000\-00");
                     return View(empresa);
@@ -61,14 +61,15 @@ namespace ServicoInWeb.Controllers
                     TempData["Sucesso"] = "Os dados da empresa foram alterados com sucesso";
                     return View(empresa);
                 }
+                
+                TempData["MensagemError"] = response.StatusCode.ToString();
+                return View(empresa);
             }
             catch
             {
                 TempData["MensagemError"] = "Algo deu errado, tente novamente mais tarde";
                 return View(empresa);
             }
-
-            return View(empresa);
         }
 
         public void ValidateFields(string cnpj, string cpf)
