@@ -8,8 +8,8 @@ builder.Services.Addinfra(builder.Configuration);
 
 builder.Services.AddSession(o =>
 {
-    o.Cookie.HttpOnly = true;
-    o.Cookie.IsEssential = true;
+	o.Cookie.HttpOnly = true;
+	o.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
@@ -31,6 +31,9 @@ app.UseSession();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Login}/{action=Index}");
+	pattern: "{controller=Login}/{action=Index}"
+);
+
+app.UseStatusCodePagesWithReExecute("/Home/Error");
 
 app.Run();
