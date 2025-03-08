@@ -4,7 +4,7 @@ namespace ServicoInWeb.Models
 {
     public class AlterarUsuarioModel
     {
-        public AlterarUsuarioModel(int id, string nome, string email, string role, int empresaId)
+        public AlterarUsuarioModel(int id, string nome, string email, RoleEnum role, int empresaId)
         {
             Id = id;
             Nome = nome;
@@ -19,7 +19,7 @@ namespace ServicoInWeb.Models
         [Required(ErrorMessage = "O email é obrigatório")]
         [EmailAddress(ErrorMessage = "O email digitado não é válido")]
         public string Email { get; set; } = string.Empty;
-        public string Role { get; set; } = "none";
+        public RoleEnum Role { get; set; } = RoleEnum.none;
         public int EmpresaId { get; set; }
 
     }

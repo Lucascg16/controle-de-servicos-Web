@@ -13,7 +13,7 @@ namespace ServicoInWeb.Models
             Usuario.Nome = model.Nome;
             Usuario.Email = model.Email;
             Usuario.Password = model.Password;
-            Usuario.Role = Utilitarios.GetRoleString(RoleEnum.Admin);
+            Usuario.Role = RoleEnum.Admin;
             Usuario.Dono = true;
             Empresa.Nome = model.NomeEmpresa;
             Empresa.Cnpj = model.Cnpj ?? string.Empty;

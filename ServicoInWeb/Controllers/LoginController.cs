@@ -41,9 +41,9 @@ namespace ServicoInWeb.Controllers
                 }
                 TempData["MensagemError"] = await response.Content.ReadAsStringAsync();
             }
-            catch
+            catch(Exception ex)
 			{
-				TempData["MensagemError"] = "Há algo de errado com o sistema, por favor entre em contato com o administrador";
+				TempData["MensagemError"] = "Há algo de errado com o sistema, por favor entre em contato com o administrador" + ex.Message;
 			}
 
             return View(login);

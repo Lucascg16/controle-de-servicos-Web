@@ -21,7 +21,7 @@ namespace ServicoInWeb.Controllers
             Autenticate(_sessionService);
         }
 
-        public async Task<IActionResult> Index(ServicoFlagEnum flag, string? nomeServico, int page = 1, int itensperpage = 10)
+        public async Task<IActionResult> Index(ServicoFlagEnum flag, string nomeServico = "", int page = 1, int itensperpage = 10)
         {
             if (Session is null)
                 return RedirectToAction("Index", "Login");
@@ -33,11 +33,11 @@ namespace ServicoInWeb.Controllers
                 HttpResponseMessage response;
                 HttpResponseMessage total;
 
-                response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&flag={Utilitarios.GetFlagString(flag)}&nome={nomeServico}&page={page}&itensPerPage={itensperpage}").Result;
-                total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&flag={Utilitarios.GetFlagString(flag)}").Result;
+                response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&flag={flag}&nome={nomeServico}&page={page}&itensPerPage={itensperpage}").Result;
+                total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&flag={flag}").Result;
 
                 List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
-                    page, $"{_urlService.GetBaseUrl()}/Servico?flag={Utilitarios.GetFlagString(flag)}&", []);
+                    page, $"{_urlService.GetBaseUrl()}/Servico?flag={flag}&", []);
 
                 if (response.IsSuccessStatusCode)
                 {

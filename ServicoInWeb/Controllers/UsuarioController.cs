@@ -71,7 +71,7 @@ namespace ServicoInWeb.Controllers
                 return View(model);
             }
 
-            UsuarioModel novoUsuario = new(model.Nome, model.Email, model.Senha, Session.Usuario.EmpresaId, Utilitarios.GetRoleString(model.Role));
+            UsuarioModel novoUsuario = new(model.Nome, model.Email, model.Senha, Session.Usuario.EmpresaId, model.Role);
 
             try
             {
@@ -110,7 +110,7 @@ namespace ServicoInWeb.Controllers
 
                 var user = await response.Content.ReadFromJsonAsync<UsuarioModel>() ?? new();
 
-                return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, Utilitarios.GetRoleEnum(user.Role), user.EmpresaId, Session.Role ?? "", int.Parse(Session.Id)));
+                return View(new AlterarUsuarioViewModel(user.Id, user.Nome, user.Email, user.Role, user.EmpresaId, Session.Role ?? "", int.Parse(Session.Id)));
             }
             catch
             {
@@ -124,7 +124,7 @@ namespace ServicoInWeb.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            AlterarUsuarioModel user = new(model.Id, model.Nome, model.Email, Utilitarios.GetRoleString(model.Role), model.EmpresaId);
+            AlterarUsuarioModel user = new(model.Id, model.Nome, model.Email, model.Role, model.EmpresaId);
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");

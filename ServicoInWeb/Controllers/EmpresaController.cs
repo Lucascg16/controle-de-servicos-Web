@@ -30,9 +30,7 @@ namespace ServicoInWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var empresa = await response.Content.ReadFromJsonAsync<EmpresaModel>() ?? new();
-                    empresa.Cnpj = Convert.ToUInt64(empresa.Cnpj).ToString(@"00\.000\.000\/0000\-00");
-                    empresa.Cpf = Convert.ToUInt64(empresa.Cpf).ToString(@"000\.000\.000\-00");
-                    return View(empresa);
+                    return View(FormatDocumentos(empresa));
                 }
 
                 return View();
@@ -41,6 +39,13 @@ namespace ServicoInWeb.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        public EmpresaModel FormatDocumentos(EmpresaModel empresa){
+            if(!string.IsNullOrEmpty(empresa.Cnpj)) empresa.Cnpj = Convert.ToUInt64(empresa.Cnpj).ToString(@"00\.000\.000\/0000\-00");
+            if(!string.IsNullOrEmpty(empresa.Cpf)) empresa.Cpf = Convert.ToUInt64(empresa.Cpf).ToString(@"000\.000\.000\-00");
+
+            return empresa;
         }
 
         [HttpPost]
