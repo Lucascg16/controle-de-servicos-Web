@@ -12,9 +12,9 @@
 
         public SessionModel(){}
 
-        public string? Token { get; set; }
-        public string? Id {  get; set; }
-        public string? Role { get; set; }
-        public UsuarioModel? Usuario { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public string Id {  get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+        public UsuarioModel Usuario { get; set; } = new();
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ServicoInWeb.Models;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
 using System.Diagnostics;
@@ -18,17 +17,11 @@ namespace ServicoInWeb.Controllers
 
 		public IActionResult Index()
 		{
-			if(Session is null)
-				return RedirectToAction("Index", "Login");
-
             return View();
 		}
 
 		public IActionResult Privacy()
 		{
-			if (Session is null)
-				return RedirectToAction("Index", "Login");
-
 			return View();
 		}
 

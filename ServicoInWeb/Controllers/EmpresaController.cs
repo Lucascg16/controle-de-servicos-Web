@@ -17,8 +17,6 @@ namespace ServicoInWeb.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            if (Session is null)
-                return RedirectToAction("Index", "Login");
             if (Session.Role == "Employee")
                 return RedirectToAction("Index", "Home");
 

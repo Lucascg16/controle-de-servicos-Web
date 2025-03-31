@@ -22,8 +22,6 @@ namespace ServicoInWeb.Controllers
 
         public async Task<IActionResult> Index(int page = 1, int itensperpage = 20, string nomeUsuario = "")
         {
-            if(Session is null)
-                return RedirectToAction("Index", "Login");
             if (Session.Role == "Employee")
                 return RedirectToAction("AlterarUsuario", "Usuario");
 
@@ -54,9 +52,6 @@ namespace ServicoInWeb.Controllers
 
         public IActionResult CriarUsuario()
         {
-            if (Session is null)
-                return RedirectToAction("Index", "Login");
-
             return View();
         }
 
@@ -100,9 +95,6 @@ namespace ServicoInWeb.Controllers
 
         public async Task<IActionResult> AlterarUsuario(Guid id)
         {
-            if(Session is null)
-                return RedirectToAction("Index", "Login");
-
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");

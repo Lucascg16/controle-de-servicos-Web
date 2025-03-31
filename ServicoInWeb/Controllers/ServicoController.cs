@@ -24,9 +24,6 @@ namespace ServicoInWeb.Controllers
 
         public async Task<IActionResult> Index(ServicoFlagEnum flag, string nomeServico = "", string data = "", int page = 1, int itensperpage = 10)
         {
-            if (Session is null)
-                return RedirectToAction("Index", "Login");
-
             List<ServicoModel> list;
             try
             {
@@ -96,9 +93,6 @@ namespace ServicoInWeb.Controllers
 
         public async Task<IActionResult> AlterarServico(int id)
         {
-            if (Session is null)
-                return RedirectToAction("Index", "Login");
-
             try
             {
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");

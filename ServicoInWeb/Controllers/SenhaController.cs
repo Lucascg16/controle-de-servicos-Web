@@ -24,9 +24,6 @@ namespace ServicoInWeb.Controllers
 
         public IActionResult Index()
         {
-            if (Session is null)
-                RedirectToAction("Index", "Login");
-
             return View();
         }
 

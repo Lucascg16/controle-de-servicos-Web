@@ -17,7 +17,7 @@ namespace ServicoInWeb.Service
 
         public async Task CreateUserSection(string token)
         {
-            var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(token) ?? new();
 
             var id = decodeToken.Claims.FirstOrDefault(x => x.Type == "id").Value;
             var role = decodeToken.Claims.FirstOrDefault(x => x.Type == "role").Value;
