@@ -29,15 +29,18 @@
 <div class="container">
     <form class="row" method="get" asp-action="Index" asp-controller="Servico">
         <span class="form-text">Filtro de serviço</span>
-        <div class="col-lg-2">
+        <div class="col-lg">
             <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select">
                 <option value="@ServicoFlagEnum.Ativo">Ativo</option>
                 <option value="@ServicoFlagEnum.Cancelado">Cancelado</option>
                 <option value="@ServicoFlagEnum.Finalizado">Finalizado</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm">
             <input type="text" id=nome asp-for="@Model.NomeServico" placeholder="Nome" class="form-control">
+        </div>
+        <div class="col-sm-4">
+            <input asp-for="@Model.Data" class="form-control" placeholder="Data do serviço" type="text" id="datepicker">
         </div>
         <div class="col-sm">
             <button class="btn btn-primary" type="submit">Filtrar</button>
@@ -155,6 +158,10 @@ else
     </div>
 }
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script>
     function Finalizar(id) {
         let faturamento = prompt("Por favor digite o valor pago pelo cliente na entrega do serviço");
@@ -171,4 +178,18 @@ else
             })
         }
     }
+
+    $("#datepicker").datepicker({
+        dateFormat: "yy-mm-dd",
+        dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+        dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        nextText: 'Proximo',
+        prevText: 'Anterior'
+    });
+
+    $('#datepicker').datepicker();
+
 </script>

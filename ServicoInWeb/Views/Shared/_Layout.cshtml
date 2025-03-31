@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.10/signalr.min.js"></script>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -29,7 +31,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; <a href="https://github.com/Lucascg16" target="_blank" class="copyLink">2024 - Lucascg16 <i class="fa-solid fa-up-right-from-square fa-2xs"></i></a>
+            &copy; <a href="https://github.com/Lucascg16" target="_blank" class="copyLink">2024 - Lucascg16 <i
+                    class="fa-solid fa-up-right-from-square fa-2xs"></i></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -37,4 +40,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

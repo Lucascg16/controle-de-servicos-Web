@@ -3,6 +3,7 @@ using ServicoInWeb.Models;
 using ServicoInWeb.Models.Enum;
 using ServicoInWeb.Service;
 using ServicoInWeb.ViewModels;
+using System.Globalization;
 using System.Net;
 
 namespace ServicoInWeb.Controllers
@@ -21,7 +22,7 @@ namespace ServicoInWeb.Controllers
             Autenticate(_sessionService);
         }
 
-        public async Task<IActionResult> Index(ServicoFlagEnum flag, string nomeServico = "", int page = 1, int itensperpage = 10)
+        public async Task<IActionResult> Index(ServicoFlagEnum flag, string nomeServico = "", string data = "", int page = 1, int itensperpage = 10)
         {
             if (Session is null)
                 return RedirectToAction("Index", "Login");
@@ -32,10 +33,11 @@ namespace ServicoInWeb.Controllers
                 _httpBase.Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Session.Token}");
                 HttpResponseMessage response;
                 HttpResponseMessage total;
+                DateTime.TryParseExact(data, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
 
-                response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&flag={flag}&nome={nomeServico}&page={page}&itensPerPage={itensperpage}").Result;
+                response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&data={date:yyyy-MM-dd}&flag={flag}&nome={nomeServico}&page={page}&itensPerPage={itensperpage}").Result;
                 total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&flag={flag}").Result;
-
+                
                 List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
                     page, $"{_urlService.GetBaseUrl()}/Servico?flag={flag}&", []);
 
@@ -48,7 +50,7 @@ namespace ServicoInWeb.Controllers
 
                 return View(new ServicoViewModel([], flag, []));
             }
-            catch
+            catch (Exception ex)
             {
                 return RedirectToAction("Error", "Home");
             }

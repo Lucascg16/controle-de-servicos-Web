@@ -43,7 +43,7 @@ namespace ServicoInWeb.Controllers
             }
             catch(Exception ex)
 			{
-				TempData["MensagemError"] = "Há algo de errado com o sistema, por favor entre em contato com o administrador" + ex.Message;
+				TempData["MensagemError"] = "Há algo de errado com o sistema, por favor entre em contato com o administrador";
 			}
 
             return View(login);
