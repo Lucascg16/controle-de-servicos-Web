@@ -11,6 +11,7 @@ namespace ServicoInWeb.ViewModels
         [EmailAddress(ErrorMessage = "O email digitado não é válido")]
         public string Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "A senha é obrigatória")]
+        [MinLength(6, ErrorMessage = "A senha deve conter pelo menos 3 caracteres")]
         public string Senha { get; set; } = string.Empty;
         [Required(ErrorMessage = "Confirmação de senha é obrigatório")]
         public string ConfirmarSenha { get; set; } = string.Empty;

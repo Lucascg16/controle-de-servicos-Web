@@ -22,10 +22,10 @@
                         title="Gerenciar os dados da empresa">Empresa</a>
                 </li>
             }
-            else if (!string.IsNullOrEmpty(Model.Role) && Model.Role == "Employee")
+            else if (!string.IsNullOrEmpty(Model.Role) && Model.Role == "Funcionario")
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Usuario" asp-action="AlterarUsuario" asp-route-id="@Model.Id"
+                    <a class="nav-link text-dark" asp-controller="Usuario" asp-action="AlterarUsuario" asp-route-id="@Model.Usuario.VId"
                         data-toggle="tooltip" title="Alterar dados do perfil">Perfil</a>
                 </li>
             }

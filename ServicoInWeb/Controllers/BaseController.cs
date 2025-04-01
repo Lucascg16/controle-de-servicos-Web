@@ -17,12 +17,15 @@ namespace ServicoInWeb.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(Session.Token);
-            
-            if(Utilitarios.ValidaTokenExpirado(decodeToken)){
-               context.Result = new RedirectToActionResult("Index", "Login", null);
-            }
+            if (Session is not null)
+            {
+                var decodeToken = new JwtSecurityTokenHandler().ReadJwtToken(Session.Token);
 
+                if (Utilitarios.ValidaTokenExpirado(decodeToken))
+                {
+                    context.Result = new RedirectToActionResult("Index", "Login", null);
+                }
+            }
             base.OnActionExecuting(context);
         }
     }

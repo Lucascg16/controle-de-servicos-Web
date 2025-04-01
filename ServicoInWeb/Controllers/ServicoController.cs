@@ -34,12 +34,12 @@ namespace ServicoInWeb.Controllers
 
                 response = _httpBase.Client.GetAsync($"api/v1/servico/all?empresaId={Session.Usuario.EmpresaId}&data={date:yyyy-MM-dd}&flag={flag}&nome={nomeServico}&page={page}&itensPerPage={itensperpage}").Result;
                 total = _httpBase.Client.GetAsync($"api/v1/servico/total?empresaId={Session.Usuario.EmpresaId}&flag={flag}").Result;
-                
-                List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
-                    page, $"{_urlService.GetBaseUrl()}/Servico?flag={flag}&", []);
 
                 if (response.IsSuccessStatusCode)
                 {
+                    List<PaginationModel> pagination = Pagination.GetPaginationsLinks(int.Parse(await total.Content.ReadAsStringAsync()), itensperpage,
+                    page, $"{_urlService.GetBaseUrl()}/Servico?flag={flag}&", []);
+
                     list = await response.Content.ReadFromJsonAsync<List<ServicoModel>>() ?? [];
                     ServicoViewModel view = new(list, flag, pagination);
                     return View(view);
