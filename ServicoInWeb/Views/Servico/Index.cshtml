@@ -27,9 +27,9 @@
     </div>
 </div>
 <div class="container">
-    <form class="row" method="get" asp-action="Index" asp-controller="Servico">
+    <form class="row" id="filterForm" method="get" asp-action="Index" asp-controller="Servico">
         <span class="form-text">Filtro de serviço</span>
-        <div class="col-lg">
+        <div class="col-lg" onchange="autoSubForm()">
             <select name="flag" id="flag" asp-for="@Model.Flag" class="form-select">
                 <option value="@ServicoFlagEnum.Ativo">Ativo</option>
                 <option value="@ServicoFlagEnum.Cancelado">Cancelado</option>
@@ -37,7 +37,7 @@
             </select>
         </div>
         <div class="col-sm">
-            <input type="text" id=nome asp-for="@Model.NomeServico" placeholder="Nome" class="form-control">
+            <input type="text" id=nome asp-for="@Model.NomeServico" placeholder="Cliente" class="form-control">
         </div>
         <div class="col-sm-4">
             <input asp-for="@Model.Data" class="form-control" placeholder="Data do serviço" type="text" id="datepicker">
@@ -55,7 +55,7 @@
             <caption>Exibindo: @Model.Servicos.Count()</caption>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Nome</th>
+                <th scope="col">Cliente</th>
                 <th scope="col">Descrição</th>
                 <th scope="col">Custos</th>
                 <th scope="col">Orçamento Inicial</th>
@@ -179,6 +179,10 @@ else
         }
     }
 
+    function autoSubForm(){
+        document.getElementById("filterForm").submit();
+    }
+
     $("#datepicker").datepicker({
         dateFormat: "yy-mm-dd",
         dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
@@ -191,5 +195,4 @@ else
     });
 
     $('#datepicker').datepicker();
-
 </script>
